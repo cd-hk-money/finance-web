@@ -1,0 +1,42 @@
+server:
+  port: 8060
+
+spring:
+  application:
+    name: web-service
+
+  h2:
+    console:
+      enabled: true # H2 ? ?? ??
+
+  datasource:
+    driver-class-name: org.h2.Driver #h2 ???? ??
+    url: jdbc:h2:tcp://localhost/~/finance-web # ?? URL
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        # dialect:
+        show_sql: true
+        format_sql: true
+
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 2000
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
