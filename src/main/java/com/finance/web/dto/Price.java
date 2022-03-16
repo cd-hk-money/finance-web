@@ -1,5 +1,6 @@
 package com.finance.web.dto;
 
+import com.finance.web.dto.Stock;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -23,6 +23,7 @@ spring:
         # dialect:
         show_sql: true
         format_sql: true
+    database: h2
 
   data:
     web:

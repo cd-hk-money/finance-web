@@ -1,26 +1,30 @@
 package com.finance.web.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.OneToMany;
-import java.util.List;
+import javax.persistence.*;
+
+import static lombok.AccessLevel.*;
 
 @Getter
-@Builder
+@AllArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PROTECTED)
 public class Stock {
 
     private String code;
     private String name;
     private String sector;
-
-    @OneToMany
     private Prices prices;
 
-    @OneToMany
-    private List<FinanceStatement> financeStatements;
+    //@OneToMany
+    // private List<FinanceStatement> financeStatements;
 
-    @OneToMany
-    private Indicators indicators;
+    // @OneToMany
+    // private Indicators indicators;
+
+
 
 }
