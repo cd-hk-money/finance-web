@@ -1,6 +1,5 @@
-package com.finance.web.dto;
+package com.finance.web.vo;
 
-import com.finance.web.dto.Stock;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +11,7 @@ import java.util.Date;
 @Builder
 public class Price {
 
-    private Stock stock;
+    private String stockCode;
     private Date date;
     private Integer changes;
     private Integer expectation;

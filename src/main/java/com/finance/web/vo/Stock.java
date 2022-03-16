@@ -1,11 +1,8 @@
-package com.finance.web.dto;
+package com.finance.web.vo;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 import static lombok.AccessLevel.*;
 
@@ -17,14 +14,6 @@ public class Stock {
     private String code;
     private String name;
     private String sector;
-    private Prices prices;
-
-    //@OneToMany
-    // private List<FinanceStatement> financeStatements;
-
-    // @OneToMany
-    // private Indicators indicators;
-
 
 
 }
