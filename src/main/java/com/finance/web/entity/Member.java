@@ -5,11 +5,14 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
+import java.util.List;
+
 import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 @Entity
 @Getter
+@Builder
 @DynamicInsert
 @NoArgsConstructor(access = PROTECTED)
 public class Member extends BaseEntity {
@@ -19,10 +22,12 @@ public class Member extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, length = 100)
-    private String password;
+    private String email;
+
 
     @Column(nullable = false, length = 100)
-    private String email;
+    private String password;
+
 
     @Column(nullable = false, length = 50)
     private String username;
@@ -44,4 +49,13 @@ public class Member extends BaseEntity {
         this.subscribe = subscribe;
         this.interestList = interestList;
     }
+
+    public void setInterestList(List<Interests> interestsList) {
+        this.interestList.setInterests(interestsList);
+    }
+
+    public void changeUsername(String username) {
+        this.username = username;
+    }
+
 }

@@ -1,7 +1,17 @@
-package com.finance.web.entity;
+package com.finance.web.dto;
+
+import com.finance.web.dto.Stock;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+import static lombok.AccessLevel.*;
+
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 public class Indicator {
 
     private Stock stock;

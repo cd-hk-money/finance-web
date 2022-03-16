@@ -1,8 +1,13 @@
-package com.finance.web.entity;
+package com.finance.web.dto;
+
+import lombok.Builder;
+import lombok.Getter;
 
 import javax.persistence.OneToMany;
 import java.util.List;
 
+@Getter
+@Builder
 public class Stock {
 
     private String code;

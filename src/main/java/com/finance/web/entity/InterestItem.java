@@ -1,5 +1,7 @@
 package com.finance.web.entity;
 
+import com.finance.web.dto.Stock;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 

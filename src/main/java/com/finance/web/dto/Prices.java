@@ -1,4 +1,4 @@
-package com.finance.web.entity;
+package com.finance.web.dto;
 
 import java.util.List;
 

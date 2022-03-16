@@ -1,7 +1,14 @@
-package com.finance.web.entity;
+package com.finance.web.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.util.Date;
 
+@Getter
+@AllArgsConstructor
+@Builder
 public class Price {
 
     private Stock stock;

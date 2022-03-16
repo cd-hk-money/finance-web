@@ -1,13 +1,20 @@
-package com.finance.web.entity;
+package com.finance.web.dto;
+
+import lombok.Builder;
+import lombok.Getter;
 
 import javax.persistence.OneToMany;
 import java.util.Date;
+
+@Builder
+@Getter
 public class FinanceStatement {
 
     private Long id;
 
     @OneToMany
     private Stock stock;
+
     private Date date;
 
     private long stocks;
