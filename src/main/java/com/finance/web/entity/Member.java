@@ -14,10 +14,15 @@ import static lombok.AccessLevel.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+@ToString(of = {"id", "email", "username"}, exclude = "interestList")
+@NamedQuery(
+        name = "Member.findByUsername",
+        query = "select m from Member m where m.username = :username")
 public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "MEMBER_ID")
     private Long id;
 
     @Column(nullable = false, length = 100, unique = true)

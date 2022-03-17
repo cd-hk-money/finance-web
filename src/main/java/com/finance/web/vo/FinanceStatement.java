@@ -12,7 +12,7 @@ public class FinanceStatement {
     private Long id;
 
     private String stockCode;
-    
+
     private Date date;
 
     private long stocks;
