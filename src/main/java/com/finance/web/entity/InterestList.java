@@ -1,13 +1,16 @@
 package com.finance.web.entity;
 
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 import static javax.persistence.GenerationType.*;
+import static lombok.AccessLevel.*;
 
 @Entity
+@Getter
 @ToString(of = {"id", "name", "sequence"})
+@NoArgsConstructor(access = PROTECTED)
 public class InterestList {
 
     @Id
@@ -21,4 +24,10 @@ public class InterestList {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+    @Builder
+    public InterestList(String name, Integer sequence, Member member) {
+        this.name = name;
+        this.sequence = sequence;
+        this.member = member;
+    }
 }
