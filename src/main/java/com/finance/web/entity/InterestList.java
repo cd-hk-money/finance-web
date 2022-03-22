@@ -30,4 +30,13 @@ public class InterestList {
         this.sequence = sequence;
         this.member = member;
     }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void changeSequence(Integer sequence) {
+        this.sequence = sequence;
+    }
+
 }

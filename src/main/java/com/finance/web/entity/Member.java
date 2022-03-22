@@ -14,7 +14,7 @@ import static lombok.AccessLevel.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@ToString(of = {"id", "email", "username"}, exclude = "interestList")
+@ToString(of = {"id", "email", "username"})
 @NamedQuery(
         name = "Member.findByUsername",
         query = "select m from Member m where m.username = :username")
@@ -37,17 +37,13 @@ public class Member extends BaseEntity {
     @Column
     private Boolean subscribe;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
-    private List<InterestList> interestList = new ArrayList<>();
-
     @Builder
     public Member(String email, String password, String username,
-                  Boolean subscribe, List<InterestList> interestList) {
+                  Boolean subscribe) {
         this.email = email;
         this.password = password;
         this.username = username;
         this.subscribe = subscribe;
-        this.interestList = interestList;
     }
 
     public void changeUsername(String username) {
