@@ -1,13 +1,16 @@
 package com.finance.web.entity;
 
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
+@Getter @Setter
 public abstract class BaseEntity {
 
     @Column(updatable = false)
@@ -25,6 +28,5 @@ public abstract class BaseEntity {
     public void preUpdate() {
         updatedDate = LocalDateTime.now();
     }
-
 
 }
