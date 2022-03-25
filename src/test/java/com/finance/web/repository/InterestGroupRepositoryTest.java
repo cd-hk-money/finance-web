@@ -34,7 +34,7 @@ class InterestGroupRepositoryTest {
                 .password("1234")
                 .username("john doe").build();
 
-        com.finance.web.entity.InterestGroup IL = InterestGroup.builder()
+        InterestGroup IL = InterestGroup.builder()
                 .name("반도체")
                 .member(member)
                 .sequence(1)
