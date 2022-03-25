@@ -28,7 +28,7 @@ class InterestRepositoryTest {
     void 생성() {
         //given
         Interest interest = Interest.builder()
-                .interestListId(1L)
+                .interestGroupId(1L)
                 .stockCode("035720")
                 .sequence(1)
                 .notification(true)
@@ -41,7 +41,7 @@ class InterestRepositoryTest {
         //then
         assertThat(findOne.get()).isEqualTo(savedOne);
         assertThat(findOne.get().getId()).isEqualTo(savedOne.getId());
-        assertThat(findOne.get().getInterestListId()).isEqualTo(savedOne.getInterestListId());
+        assertThat(findOne.get().getInterestGroupId()).isEqualTo(savedOne.getInterestGroupId());
         assertThat(findOne.get().getStockCode()).isEqualTo(savedOne.getStockCode());
     }
 

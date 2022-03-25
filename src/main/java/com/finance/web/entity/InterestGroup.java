@@ -11,7 +11,7 @@ import static lombok.AccessLevel.*;
 @Getter
 @ToString(of = {"id", "name", "sequence"})
 @NoArgsConstructor(access = PROTECTED)
-public class InterestList {
+public class InterestGroup {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -25,7 +25,7 @@ public class InterestList {
     private Member member;
 
     @Builder
-    public InterestList(String name, Integer sequence, Member member) {
+    public InterestGroup(String name, Integer sequence, Member member) {
         this.name = name;
         this.sequence = sequence;
         this.member = member;

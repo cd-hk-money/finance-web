@@ -1,9 +1,7 @@
 package com.finance.web.repository;
 
-import com.finance.web.entity.Interest;
-import com.finance.web.entity.InterestList;
+import com.finance.web.entity.InterestGroup;
 import com.finance.web.entity.Member;
-import com.netflix.discovery.converters.Auto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,14 +13,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class InterestListRepositoryTest {
+class InterestGroupRepositoryTest {
 
     @Autowired
-    InterestListRepository interestListRepository;
+    InterestGroupRepository interestGroupRepository;
 
     @Autowired
     MemberRepository memberRepository;
@@ -37,14 +34,14 @@ class InterestListRepositoryTest {
                 .password("1234")
                 .username("john doe").build();
 
-        InterestList IL = InterestList.builder()
+        com.finance.web.entity.InterestGroup IL = InterestGroup.builder()
                 .name("반도체")
                 .member(member)
                 .sequence(1)
                 .build();
 
         Member savedMember = memberRepository.save(member);
-        InterestList savedIL = interestListRepository.save(IL);
+        InterestGroup savedIL = interestGroupRepository.save(IL);
 
         assertThat(savedIL.getMember()).isEqualTo(savedMember);
         assertThat(savedIL.getMember()).isEqualTo(member);
@@ -58,17 +55,17 @@ class InterestListRepositoryTest {
                 .password("1234")
                 .username("john doe").build();
 
-        InterestList IL = InterestList.builder()
+        InterestGroup IL = InterestGroup.builder()
                 .name("반도체")
                 .member(member)
                 .sequence(1)
                 .build();
 
         Member savedMember = memberRepository.save(member);
-        InterestList savedIL = interestListRepository.save(IL);
+        InterestGroup savedIL = interestGroupRepository.save(IL);
 
         //when
-        List<InterestList> findILs = interestListRepository.findAllByMember(member);
+        List<InterestGroup> findILs = interestGroupRepository.findAllByMember(member);
 
         //then
         assertThat(findILs.get(0)).isEqualTo(savedIL);
@@ -83,21 +80,21 @@ class InterestListRepositoryTest {
                 .password("1234")
                 .username("john doe").build();
 
-        InterestList IL = InterestList.builder()
+        InterestGroup IL = com.finance.web.entity.InterestGroup.builder()
                 .name("반도체")
                 .member(member)
                 .sequence(1)
                 .build();
 
         Member savedMember = memberRepository.save(member);
-        InterestList savedIL = interestListRepository.save(IL);
+        InterestGroup savedIL = interestGroupRepository.save(IL);
 
         Long ilId = IL.getId();
 
         //when
         IL.changeSequence(2);
         IL.updateName("부동산"); // hibernate 변경감지
-        Optional<InterestList> findIL = interestListRepository.findById(ilId);
+        Optional<InterestGroup> findIL = interestGroupRepository.findById(ilId);
         assertThat(findIL).isPresent();
 
         //then
@@ -116,27 +113,27 @@ class InterestListRepositoryTest {
                 .password("1234")
                 .username("john doe").build();
 
-        InterestList IL = InterestList.builder()
+        InterestGroup IL = InterestGroup.builder()
                 .name("반도체")
                 .member(member)
                 .sequence(1)
                 .build();
 
         Member savedMember = memberRepository.save(member);
-        InterestList savedIL = interestListRepository.save(IL);
+        InterestGroup savedIL = interestGroupRepository.save(IL);
 
         Long ilId = IL.getId();
 
         //when
-        Optional<InterestList> findIL = interestListRepository.findById(ilId);
+        Optional<InterestGroup> findIL = interestGroupRepository.findById(ilId);
         assertThat(findIL).isPresent();
 
         findIL.ifPresent(selectedIL -> {
-            interestListRepository.delete(savedIL);
+            interestGroupRepository.delete(savedIL);
         });
 
         //then
-        assertThat(interestListRepository.findById(ilId)).isEmpty();
+        assertThat(interestGroupRepository.findById(ilId)).isEmpty();
         System.out.println("savedIL = " + savedIL);
     }
 }

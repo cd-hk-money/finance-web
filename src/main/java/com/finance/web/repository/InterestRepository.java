@@ -16,10 +16,10 @@ public interface InterestRepository extends JpaRepository<Interest, Long> {
     @Query("select i from Interest i where i.stockCode = :stockCode")
     List<Interest> findAllByStockCode(@Param("stockCode") String stockCode);
 
-    @Query("select i from Interest i where i.interestListId = :interestListId")
-    List<Interest> findAllByInterestListId(@Param("interestListId") Long interestListId);
+    @Query("select i from Interest i where i.interestGroupId = :interestGroupId")
+    List<Interest> findAllByInterestListId(@Param("interestGroupId") Long interestGroupId);
 
-    @Query("select i from Interest i where i.interestListId = :interestListId and i.notification = true")
-    List<Interest> findAllByInterestListIdAndNotificationTrue(@Param("interestListId") Long interestListId);
+    @Query("select i from Interest i where i.interestGroupId = :interestGroupId and i.notification = true")
+    List<Interest> findAllByInterestListIdAndNotificationTrue(@Param("interestGroupId") Long interestGroupId);
 
 }

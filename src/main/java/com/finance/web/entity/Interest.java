@@ -20,7 +20,7 @@ public class Interest extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private Long interestListId;
+    private Long interestGroupId;
 
     @Column(nullable = false)
     private String stockCode;
@@ -32,9 +32,9 @@ public class Interest extends BaseEntity {
     private Boolean notification;
 
     @Builder
-    public Interest(Long interestListId, String stockCode,
+    public Interest(Long interestGroupId, String stockCode,
                     Integer sequence, Boolean notification) {
-        this.interestListId = interestListId;
+        this.interestGroupId = interestGroupId;
         this.stockCode = stockCode;
         this.sequence = sequence;
         this.notification = notification;
