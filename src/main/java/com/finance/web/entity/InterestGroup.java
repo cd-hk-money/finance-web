@@ -9,6 +9,8 @@ import static lombok.AccessLevel.*;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @ToString(of = {"id", "name", "sequence"})
 @NoArgsConstructor(access = PROTECTED)
 public class InterestGroup {
@@ -24,12 +26,6 @@ public class InterestGroup {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @Builder
-    public InterestGroup(String name, Integer sequence, Member member) {
-        this.name = name;
-        this.sequence = sequence;
-        this.member = member;
-    }
 
     public void updateName(String name) {
         this.name = name;

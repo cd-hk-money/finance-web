@@ -2,6 +2,7 @@ package com.finance.web.repository;
 
 import com.finance.web.entity.InterestGroup;
 import com.finance.web.entity.Member;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,41 +28,41 @@ class InterestGroupRepositoryTest {
     @Autowired
     EntityManager em;
 
-    @Test
-    void create() {
+    Member member;
+
+
+    @BeforeEach
+    void init() {
         Member member = Member.builder()
                 .email("email@test.com")
                 .password("1234")
                 .username("john doe").build();
 
+        memberRepository.save(member);
+    }
+
+    @Test
+    void create() {
         InterestGroup IL = InterestGroup.builder()
                 .name("반도체")
                 .member(member)
                 .sequence(1)
                 .build();
 
-        Member savedMember = memberRepository.save(member);
         InterestGroup savedIL = interestGroupRepository.save(IL);
 
-        assertThat(savedIL.getMember()).isEqualTo(savedMember);
-        assertThat(savedIL.getMember()).isEqualTo(member);
+        assertThat(savedIL.getId()).isEqualTo(IL.getId());
     }
 
     @Test
     void read() throws Exception {
         //given
-        Member member = Member.builder()
-                .email("email@test.com")
-                .password("1234")
-                .username("john doe").build();
-
         InterestGroup IL = InterestGroup.builder()
                 .name("반도체")
                 .member(member)
                 .sequence(1)
                 .build();
 
-        Member savedMember = memberRepository.save(member);
         InterestGroup savedIL = interestGroupRepository.save(IL);
 
         //when
@@ -69,33 +70,34 @@ class InterestGroupRepositoryTest {
 
         //then
         assertThat(findILs.get(0)).isEqualTo(savedIL);
-        assertThat(findILs.get(0).getMember()).isEqualTo(savedMember);
+
+        for (InterestGroup findIL : findILs) {
+            assertThat(findIL.getMember().getId()).isEqualTo(member.getId());
+        }
     }
 
     @Test
     void update() throws Exception {
         //given
-        Member member = Member.builder()
-                .email("email@test.com")
-                .password("1234")
-                .username("john doe").build();
-
         InterestGroup IL = com.finance.web.entity.InterestGroup.builder()
                 .name("반도체")
                 .member(member)
                 .sequence(1)
                 .build();
 
-        Member savedMember = memberRepository.save(member);
-        InterestGroup savedIL = interestGroupRepository.save(IL);
+        interestGroupRepository.save(IL);
 
-        Long ilId = IL.getId();
+        em.flush();
+        em.clear();
 
         //when
         IL.changeSequence(2);
         IL.updateName("부동산"); // hibernate 변경감지
-        Optional<InterestGroup> findIL = interestGroupRepository.findById(ilId);
+        Optional<InterestGroup> findIL = interestGroupRepository.findById(IL.getId());
         assertThat(findIL).isPresent();
+
+        em.flush();
+        em.clear();
 
         //then
         assertThat(findIL.get().getSequence()).isEqualTo(2);
@@ -106,12 +108,38 @@ class InterestGroupRepositoryTest {
     }
 
     @Test
+    void updateGroupName() {
+        //given
+        InterestGroup IL = com.finance.web.entity.InterestGroup.builder()
+                .name("반도체")
+                .member(member)
+                .sequence(1)
+                .build();
+
+        interestGroupRepository.save(IL);
+
+        em.flush();
+        em.clear();
+
+        //when
+        interestGroupRepository.updateName(IL.getId(), "부동산"); // 쿼리
+
+        em.flush();
+        em.clear();
+
+        Optional<InterestGroup> findIL = interestGroupRepository.findById(IL.getId());
+        assertThat(findIL).isPresent();
+
+        //then
+        assertThat(findIL.get().getName()).isEqualTo("부동산");
+
+        System.out.println("findIL = " + findIL.get().getName());
+        System.out.println("findIL.sequence = " + findIL.get().getSequence());
+    }
+
+    @Test
     void delete() throws Exception {
         //given
-        Member member = Member.builder()
-                .email("email@test.com")
-                .password("1234")
-                .username("john doe").build();
 
         InterestGroup IL = InterestGroup.builder()
                 .name("반도체")
@@ -119,7 +147,6 @@ class InterestGroupRepositoryTest {
                 .sequence(1)
                 .build();
 
-        Member savedMember = memberRepository.save(member);
         InterestGroup savedIL = interestGroupRepository.save(IL);
 
         Long ilId = IL.getId();

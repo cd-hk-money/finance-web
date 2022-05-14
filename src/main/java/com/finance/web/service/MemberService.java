@@ -1,7 +1,6 @@
 package com.finance.web.service;
 
 import com.finance.web.entity.Member;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
