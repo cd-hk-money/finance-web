@@ -34,6 +34,6 @@ public class Member extends BaseEntity {
     private String username;
 
     @Column
-    private Boolean subscribe;
+    private Boolean subscription;
 
 }

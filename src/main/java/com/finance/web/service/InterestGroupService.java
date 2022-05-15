@@ -1,10 +1,9 @@
 package com.finance.web.service;
 
-import com.finance.exception.service.NoSuchIdException;
 
 public interface InterestGroupService {
 
-    public Long create(Long memberId, String groupName, Integer sequence) throws NoSuchIdException;
+    public Long create(Long memberId, String groupName, Integer sequence);
 
     public void delete(Long groupId);
 

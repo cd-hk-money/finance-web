@@ -16,7 +16,7 @@ class InterestGroupTest {
                 .email("test")
                 .password("1234")
                 .username("testname")
-                .subscribe(true)
+                .subscription(true)
                 .build();
     }
 

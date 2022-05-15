@@ -16,13 +16,13 @@ class MemberTest {
                 .email("test")
                 .password("1234")
                 .username("testname")
-                .subscribe(true)
+                .subscription(true)
                 .build();
 
         assertThat(member.getEmail()).isEqualTo("test");
         assertThat(member.getPassword()).isEqualTo("1234");
         assertThat(member.getUsername()).isEqualTo("testname");
-        assertThat(member.getSubscribe()).isEqualTo(true);
+        assertThat(member.getSubscription()).isEqualTo(true);
     }
 
 }

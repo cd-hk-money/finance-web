@@ -15,5 +15,5 @@ import static lombok.AccessLevel.PROTECTED;
 public class MemberDto {
     private String email;
     private String username;
-    private Boolean subscribe;
+    private Boolean subscription;
 }

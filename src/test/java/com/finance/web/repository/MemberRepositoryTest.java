@@ -30,7 +30,9 @@ class MemberRepositoryTest {
         Member member = Member.builder()
                 .email("email@test.com")
                 .password("1234")
-                .username("john doe").build();
+                .username("john doe")
+                .subscription(true)
+                .build();
 
         Member savedMember = memberRepository.save(member);
         Optional<Member> findMember = memberRepository.findOneByUsername("john doe");

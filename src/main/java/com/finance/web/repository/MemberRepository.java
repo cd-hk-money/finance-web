@@ -18,8 +18,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m where m.id = :id")
     Optional<Member> findOneById(@Param("id") Long id);
 
-    @Query("select m from Member m where m.subscribe= :true")
-    List<Member> findBySubscribe();
+    @Query("select m from Member m where m.subscription= :true")
+    List<Member> findBySubscription();
 
     @Query("select m from Member m where m.email =:email")
     List<Member> findListByEmail(@Param("email") String email);
