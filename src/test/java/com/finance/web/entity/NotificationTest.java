@@ -8,8 +8,10 @@ class NotificationTest {
 
     @Test
     void create() {
-        Notification noti = new Notification("035720",
-                "카카오 확정실적 발표", "2021년 매출액 xxx조");
+        Notification noti = Notification.builder()
+                .stockCode("035720")
+                .title("카카오 확정실적 발표")
+                .sentence("2021년 매출액 xxx조").build();
 
         assertThat(noti.getStockCode()).isEqualTo("035720");
         assertThat(noti.getTitle()).isEqualTo("카카오 확정실적 발표");
