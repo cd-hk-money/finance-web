@@ -77,38 +77,7 @@ class InterestGroupRepositoryTest {
     }
 
     @Test
-    void update() throws Exception {
-        //given
-        InterestGroup IL = com.finance.web.entity.InterestGroup.builder()
-                .name("반도체")
-                .member(member)
-                .sequence(1)
-                .build();
-
-        interestGroupRepository.save(IL);
-
-        em.flush();
-        em.clear();
-
-        //when
-        IL.changeSequence(2);
-        IL.updateName("부동산"); // hibernate 변경감지
-        Optional<InterestGroup> findIL = interestGroupRepository.findById(IL.getId());
-        assertThat(findIL).isPresent();
-
-        em.flush();
-        em.clear();
-
-        //then
-        assertThat(findIL.get().getSequence()).isEqualTo(2);
-        assertThat(findIL.get().getName()).isEqualTo("부동산");
-
-        System.out.println("findIL = " + findIL.get().getName());
-        System.out.println("findIL.sequence = " + findIL.get().getSequence());
-    }
-
-    @Test
-    void updateGroupName() {
+    void update() {
         //given
         InterestGroup IL = com.finance.web.entity.InterestGroup.builder()
                 .name("반도체")

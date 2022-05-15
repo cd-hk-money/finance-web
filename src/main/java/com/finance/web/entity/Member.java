@@ -1,18 +1,17 @@
 package com.finance.web.entity;
 
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 @ToString(of = {"id", "email", "username"})
 @NamedQuery(
@@ -36,18 +35,5 @@ public class Member extends BaseEntity {
 
     @Column
     private Boolean subscribe;
-
-    @Builder
-    public Member(String email, String password, String username,
-                  Boolean subscribe) {
-        this.email = email;
-        this.password = password;
-        this.username = username;
-        this.subscribe = subscribe;
-    }
-
-    public void changeUsername(String username) {
-        this.username = username;
-    }
 
 }

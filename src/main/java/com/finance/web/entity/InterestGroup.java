@@ -26,13 +26,4 @@ public class InterestGroup {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-
-    public void updateName(String name) {
-        this.name = name;
-    }
-
-    public void changeSequence(Integer sequence) {
-        this.sequence = sequence;
-    }
-
 }
