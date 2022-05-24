@@ -19,12 +19,21 @@ import java.util.Set;
 public class SwaggerConfig {
 
     private ApiInfo swaggerInfo() {
-        return new ApiInfoBuilder().title("IoT API")
-                .description("IoT API Docs").build();
+        return new ApiInfoBuilder().title("Web API")
+                .description("Web API Docs").build();
     }
 
+    /**
+     * Swagger 설정을 정의한 코드입니다.
+     * .consume()과 .produces()는 각각 Request Content-Type, Response Content-Type에 대한 설정입니다.(선택)
+     * .apiInfo()는 Swagger API 문서에 대한 설명을 표기하는 메소드입니다. (선택)
+     * .apis()는 Swagger API 문서로 만들기 원하는 basePackage 경로입니다. (필수)
+     * .path()는 URL 경로를 지정하여 해당 URL에 해당하는 요청만 Swagger API 문서로 만듭니다.(필수)
+     * @return
+     */
+
     @Bean
-    public Docket swaggerApi() {
+    public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .consumes(getConsumeContentTypes())
                 .produces(getProduceContentTypes())
