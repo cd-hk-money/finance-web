@@ -15,7 +15,7 @@ public class InterestServiceImpl implements InterestService {
     private final InterestGroupRepository interestGroupRepository;
 
     public Long enroll(String stockCode, Long InterestGroupId) {
-
+        
         return null;
     }
 
