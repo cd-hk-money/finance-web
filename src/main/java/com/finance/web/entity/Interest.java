@@ -1,5 +1,6 @@
 package com.finance.web.entity;
 
+import com.finance.web.dto.InterestResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,9 +30,21 @@ public class Interest extends BaseEntity {
     private String stockCode;
 
     @Column(nullable = false)
+    private String stockName;
+
+    @Column(nullable = false)
     private Integer sequence;
 
     @Column
     private Boolean notification;
+
+    public InterestResponseDto toResponseDto() {
+        return InterestResponseDto.builder()
+                .id(id)
+                .stockCode(stockCode)
+                .stockName(stockName)
+                .sequence(sequence)
+                .build();
+    }
 
 }

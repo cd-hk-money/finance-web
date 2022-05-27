@@ -1,9 +1,16 @@
 package com.finance.web.service;
 
+import com.finance.web.dto.InterestGroupDto;
+import com.finance.web.entity.Interest;
+
+import java.util.HashSet;
+
 public interface InterestService {
 
-    public Long enroll(String stockCode, Long InterestGroupId);
+    Long enroll(String stockCode, Long InterestGroupId);
 
-    public void unenroll();
+    void unEnroll();
+
+    HashSet<Interest> getInterests(InterestGroupDto interestGroupDto);
 
 }

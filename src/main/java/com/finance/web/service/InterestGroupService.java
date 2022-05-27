@@ -1,13 +1,20 @@
 package com.finance.web.service;
 
 
+import com.finance.web.dto.InterestGroupDto;
+import com.finance.web.dto.InterestGroupResponseDto;
+
+import java.util.List;
+
 public interface InterestGroupService {
 
-    public Long create(Long memberId, String groupName, Integer sequence);
+    InterestGroupDto create(Long memberId, InterestGroupDto interestGroupDto);
 
-    public void delete(Long groupId);
+    void delete(Long groupId);
 
-    public void updateName(Long interestGroupId, String name);
+    void updateName(Long interestGroupId, String name);
 
-    public void changeSequence(Integer sequence);
+    void changeSequence(Integer sequence);
+
+    List<InterestGroupResponseDto> getInterestGroups(Long memberId);
 }

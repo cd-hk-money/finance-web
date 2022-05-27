@@ -1,14 +1,20 @@
 package com.finance.web.service;
 
+import com.finance.web.dto.InterestGroupDto;
+import com.finance.web.dto.InterestGroupResponseDto;
+import com.finance.web.dto.InterestResponseDto;
+import com.finance.web.entity.Interest;
 import com.finance.web.entity.InterestGroup;
 import com.finance.web.entity.Member;
 import com.finance.web.repository.InterestGroupRepository;
 import com.finance.web.repository.MemberRepository;
+import com.finance.web.service.mapper.InterestGroupMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -16,34 +22,53 @@ import java.util.Optional;
 public class InterestGroupServiceImpl implements InterestGroupService {
 
     private final InterestGroupRepository interestGroupRepository;
+    private final InterestService interestService;
     private final MemberRepository memberRepository;
+    private final InterestGroupMapper interestGroupMapper;
 
-    public Long create(Long memberId, String groupName, Integer sequence) {
-        Optional<Member> id = memberRepository.findOneById(memberId);
-        if (id.isPresent()) {
-            Member member = id.get();
-            InterestGroup interestGroup = InterestGroup.builder()
-                    .name(groupName)
-                    .sequence(sequence)
-                    .member(member)
-                    .build();
+    public InterestGroupDto create(Long memberId, InterestGroupDto interestGroupDto) {
+        Optional<Member> optionalMember = memberRepository.findOneById(memberId);
+        if (optionalMember.isPresent()) {
+            InterestGroup interestGroup = interestGroupMapper.toEntity(interestGroupDto);
             InterestGroup save = interestGroupRepository.save(interestGroup);
-            return save.getId();
+            return interestGroupMapper.toDto(save);
+        }
+        return null;
+    }
+
+    @Override
+    public List<InterestGroupResponseDto> getInterestGroups(Long memberId) {
+        List<InterestGroupResponseDto> responseDtos = new ArrayList<>();
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            List<InterestGroup> interestGroups = interestGroupRepository.findAllByMember(member);
+
+            for (InterestGroup interestGroup : interestGroups) {
+                Long id = interestGroup.getId();
+                String name = interestGroup.getName();
+                HashSet<InterestResponseDto> item = (HashSet<InterestResponseDto>) interestService.getInterests(interestGroupMapper.toDto(interestGroup)).stream()
+                        .map(Interest::toResponseDto)
+                        .collect(Collectors.toSet());
+                responseDtos.add(new InterestGroupResponseDto(id, name, item));
+            }
+            return responseDtos;
         }
         return null;
     }
 
     public void delete(Long groupId) {
-        Optional<InterestGroup> byId = interestGroupRepository.findById(groupId);
-        if (byId.isPresent()) {
-            interestGroupRepository.delete(byId.get());
+        Optional<InterestGroup> optionalInterestGroup = interestGroupRepository.findById(groupId);
+        if (optionalInterestGroup.isPresent()) {
+            InterestGroup interestGroup = optionalInterestGroup.get();
+            interestGroupRepository.delete(interestGroup);
         }
     }
 
-
     public void updateName(Long interestGroupId, String name) {
-        Optional<InterestGroup> byId = interestGroupRepository.findById(interestGroupId);
-        if (byId.isPresent()) {
+        Optional<InterestGroup> optionalInterestGroup = interestGroupRepository.findById(interestGroupId);
+        if (optionalInterestGroup.isPresent()) {
             interestGroupRepository.updateName(interestGroupId, name);
         }
     }

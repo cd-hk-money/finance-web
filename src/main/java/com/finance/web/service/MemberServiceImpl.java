@@ -1,5 +1,6 @@
 package com.finance.web.service;
 
+import com.finance.web.dto.MemberDto;
 import com.finance.web.dto.MemberSaveRequestDto;
 import com.finance.web.entity.Member;
 import com.finance.web.repository.MemberRepository;
@@ -21,10 +22,10 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public Long join(MemberSaveRequestDto memberSaveRequestDto) {
+    public MemberDto join(MemberSaveRequestDto memberSaveRequestDto) {
         validateDuplicateMember(memberSaveRequestDto);
         Member save = memberRepository.save(memberSaveRequestDto.toEntity());
-        return save.getId();
+        return memberMapper.toDto(save);
     }
 
     @Override

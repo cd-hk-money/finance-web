@@ -1,5 +1,6 @@
 package com.finance.web.service;
 
+import com.finance.web.dto.MemberDto;
 import com.finance.web.dto.MemberSaveRequestDto;
 import com.finance.web.entity.Member;
 
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 public interface MemberService {
 
-    public Long join(MemberSaveRequestDto memberSaveRequestDto);
+    public MemberDto join(MemberSaveRequestDto memberSaveRequestDto);
 
     public boolean validateDuplicateMember(MemberSaveRequestDto memberSaveRequestDto);
 

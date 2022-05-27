@@ -1,10 +1,12 @@
 package com.finance.web.repository;
 
 import com.finance.web.entity.Interest;
+import com.finance.web.entity.InterestGroup;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +19,7 @@ public interface InterestRepository extends JpaRepository<Interest, Long> {
     List<Interest> findAllByStockCode(@Param("stockCode") String stockCode);
 
     @Query("select i from Interest i where i.interestGroupId = :interestGroupId")
-    List<Interest> findAllByInterestListId(@Param("interestGroupId") Long interestGroupId);
+    HashSet<Interest> findAllByInterestGroupId(@Param("interestGroupId") Long interestGroupId);
 
     @Query("select i from Interest i where i.interestGroupId = :interestGroupId and i.notification = true")
     List<Interest> findAllByInterestListIdAndNotificationTrue(@Param("interestGroupId") Long interestGroupId);
