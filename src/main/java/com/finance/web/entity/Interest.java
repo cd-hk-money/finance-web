@@ -44,6 +44,7 @@ public class Interest extends BaseEntity {
                 .stockCode(stockCode)
                 .stockName(stockName)
                 .sequence(sequence)
+                .notification(notification)
                 .build();
     }
 

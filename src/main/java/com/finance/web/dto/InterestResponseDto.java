@@ -9,10 +9,9 @@ import static lombok.AccessLevel.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 public class InterestResponseDto {
-
     private Long id;
     private String stockCode;
     private String stockName;
     private Integer sequence;
-
+    private Boolean notification;
 }
