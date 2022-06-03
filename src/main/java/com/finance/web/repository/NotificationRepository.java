@@ -10,9 +10,7 @@ import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    @Query("select n from Notification n where n.stockCode = :stockCode")
+    @Query("select distinct n from Notification n where n.stockCode = :stockCode")
     List<Notification> findAllByStockCode(@Param("stockCode") String stockCode);
 
-    @Query("select n from Notification n where n.stockCode = :stockCode and n.createdDate = :createdDate")
-    List<Notification> findAllByStockCodeAndCreatedDate(@Param("stockCode") String stockCode, LocalDateTime createdDate);
 }
