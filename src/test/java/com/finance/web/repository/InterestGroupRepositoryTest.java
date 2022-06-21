@@ -96,7 +96,7 @@ class InterestGroupRepositoryTest {
 
         //then
         Optional<InterestGroup> byId = interestGroupRepository.findById(objectId);
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             List<Interest> interests = byId.get().getInterests();
             interests.stream().map(interest -> "interest.getStockCode() = "
                     + interest.getStockCode()).forEach(System.out::println);
@@ -133,7 +133,26 @@ class InterestGroupRepositoryTest {
             System.out.println("interestGroup.getInterests() = " + interestGroup.getInterests());
         }
         //then
-
     }
+
+
+    @Test
+    void deleteInterestFromGroup() throws Exception {
+        //given
+        Interest item = new Interest("7654321", "x테스트x");
+        ObjectId objectId = new ObjectId("62b1759d92353f579c9844db");
+
+        //when
+        interestGroupRepository.deleteInterest(objectId, item);
+
+        //then
+        Optional<InterestGroup> byId = interestGroupRepository.findById(objectId);
+        if (byId.isPresent()) {
+            List<Interest> interests = byId.get().getInterests();
+            interests.stream().map(interest -> "interest.getStockCode() = "
+                    + interest.getStockCode()).forEach(System.out::println);
+        }
+    }
+
 
 }

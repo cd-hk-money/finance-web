@@ -23,4 +23,14 @@ public class CustomInterestGroupRepositoryImpl implements CustomInterestGroupRep
         mongoTemplate.updateFirst(query, update, "interestGroups");
     }
 
+    public void deleteInterest(ObjectId interestGroupId, Interest item) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(interestGroupId));
+
+        Update update = new Update();
+        update.pull("interests", item);
+
+        mongoTemplate.updateFirst(query, update, "interestGroups");
+    }
+
 }
