@@ -9,13 +9,13 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
+import java.util.HashSet;
 import java.util.List;
 
 @RequiredArgsConstructor
 public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 
     private final MongoTemplate mongoTemplate;
-
 
     @Override
     public void pushItemToNotifications(ObjectId memberId, String item) {
@@ -38,4 +38,5 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 
         mongoTemplate.updateFirst(query, update, "members");
     }
+
 }

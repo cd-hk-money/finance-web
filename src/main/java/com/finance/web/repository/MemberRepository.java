@@ -6,11 +6,11 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.HashSet;
 import java.util.List;
 
 public interface MemberRepository extends MongoRepository<Member, ObjectId>, CustomMemberRepository {
 
-    @Query("{notification: { all: #{#stockCode}}}")
-    List<Member> findByStockCodeInNotifications(@Param("stockCode") String stockCode);
+    public HashSet<Member> findMemberByNotificationsContaining(@Param("stockCode") String stockCode);
 
 }

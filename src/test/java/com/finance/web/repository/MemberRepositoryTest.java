@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import java.util.HashSet;
 import java.util.List;
 
 @SpringBootTest
@@ -37,7 +38,7 @@ class MemberRepositoryTest {
     void pushItemToNotifications() throws Exception {
         //given
         String item = "123456";
-        ObjectId objectId = new ObjectId("62b1ad6c4511dc1e6b9afddf");
+        ObjectId objectId = new ObjectId("62b1692848b07a611c0965fe");
 
         //when
         memberRepository.pushItemToNotifications(objectId, item);
@@ -46,11 +47,11 @@ class MemberRepositoryTest {
     }
 
     @Test
-    void findByItemInNotification() {
+    void findByItemNotificationContaining() {
         String item = "123456";
 
-        List<Member> byStockCodeInNotifications = memberRepository.findByStockCodeInNotifications("123456");
-        byStockCodeInNotifications.forEach(byStockCodeInNotification -> {
+        HashSet<Member> membersByNotificationContains = memberRepository.findMemberByNotificationsContaining("123456");
+        membersByNotificationContains.forEach(byStockCodeInNotification -> {
             System.out.println("byStockCodeInNotification.getEmail() = " + byStockCodeInNotification.getEmail());
             System.out.println("byStockCodeInNotification.getUsername() = " + byStockCodeInNotification.getUsername());
         });
