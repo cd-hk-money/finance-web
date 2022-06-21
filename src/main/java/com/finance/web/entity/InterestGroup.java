@@ -1,29 +1,26 @@
 package com.finance.web.entity;
 
 import lombok.*;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-
-import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
-@Entity
 @Getter
 @Builder
+@Document(collection = "interestGroups")
 @AllArgsConstructor
 @ToString(of = {"id", "name", "sequence"})
 @NoArgsConstructor(access = PROTECTED)
 public class InterestGroup {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private ObjectId id;
 
     private String name;
     private Integer sequence;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
 }

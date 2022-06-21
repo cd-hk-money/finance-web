@@ -1,51 +1,35 @@
 package com.finance.web.entity;
 
-import com.finance.web.dto.InterestResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-
-import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.PROTECTED;
 
 
-@Entity
 @Builder
 @Getter
+@Document(collection = "interests")
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-public class Interest extends BaseEntity {
+public class Interest {
+
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private ObjectId id;
 
-    @Column(nullable = false)
-    private Long interestGroupId;
+    private ObjectId interestGroupId;
 
-    @Column(nullable = false)
     private String stockCode;
 
-    @Column(nullable = false)
     private String stockName;
 
-    @Column(nullable = false)
     private Integer sequence;
 
-    @Column
     private Boolean notification;
-
-    public InterestResponseDto toResponseDto() {
-        return InterestResponseDto.builder()
-                .id(id)
-                .stockCode(stockCode)
-                .stockName(stockName)
-                .sequence(sequence)
-                .notification(notification)
-                .build();
-    }
 
 }

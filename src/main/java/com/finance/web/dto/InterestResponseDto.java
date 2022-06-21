@@ -1,6 +1,7 @@
 package com.finance.web.dto;
 
 import lombok.*;
+import org.bson.types.ObjectId;
 
 import static lombok.AccessLevel.*;
 
@@ -9,7 +10,7 @@ import static lombok.AccessLevel.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 public class InterestResponseDto {
-    private Long id;
+    private ObjectId id;
     private String stockCode;
     private String stockName;
     private Integer sequence;

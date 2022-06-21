@@ -3,6 +3,7 @@ package com.finance.web.service.mapper;
 import com.finance.web.config.MapStructMapperConfig;
 import com.finance.web.dto.MemberDto;
 import com.finance.web.entity.Member;
+import com.finance.web.service.GenericMapper;
 import org.mapstruct.Mapper;
 
 @Mapper(config = MapStructMapperConfig.class)

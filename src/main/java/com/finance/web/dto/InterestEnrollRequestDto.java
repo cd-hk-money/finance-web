@@ -5,6 +5,7 @@ import com.finance.web.entity.Interest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import org.bson.types.ObjectId;
 
 @Getter
 @Builder
@@ -13,18 +14,8 @@ public class InterestEnrollRequestDto {
 
     private String stockCode;
     private String stockName;
-    private Long interestGroupId;
+    private ObjectId interestGroupId;
     private Integer sequence;
     private Boolean notification;
-
-    public Interest toEntity() {
-        return Interest.builder()
-                .stockCode(stockCode)
-                .stockName(stockName)
-                .interestGroupId(interestGroupId)
-                .sequence(sequence)
-                .notification(notification)
-                .build();
-    }
 
 }

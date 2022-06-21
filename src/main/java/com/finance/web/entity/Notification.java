@@ -1,25 +1,23 @@
 package com.finance.web.entity;
 
 import lombok.*;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-
-import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
-@Entity
 @Getter
 @Builder
+@Document(collection = "notifications")
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-public class Notification extends BaseEntity {
+public class Notification {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private ObjectId id;
 
-    @JoinColumn(name = "MEMBER_ID")
-    private Long memberId;
+    private ObjectId memberId;
 
     private String stockCode;
 

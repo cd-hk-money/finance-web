@@ -1,4 +1,4 @@
-package com.finance.web.service.mapper;
+package com.finance.web.service;
 
 import org.mapstruct.BeanMapping;
 import org.mapstruct.MappingTarget;

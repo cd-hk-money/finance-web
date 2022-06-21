@@ -1,28 +1,34 @@
 package com.finance.web.entity;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.test.annotation.Rollback;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
-@Transactional
 @SpringBootTest
+@Rollback(value = true)
 class MemberTest {
 
-    @Test
-    void create() {
-        Member member = Member.builder()
-                .email("test")
-                .password("1234")
-                .username("testname")
-                .subscription(true)
-                .build();
+    @Autowired
+    MongoTemplate mongoTemplate;
 
-        assertThat(member.getEmail()).isEqualTo("test");
-        assertThat(member.getPassword()).isEqualTo("1234");
-        assertThat(member.getUsername()).isEqualTo("testname");
-        assertThat(member.getSubscription()).isEqualTo(true);
+    @Test
+    void basic_test() throws Exception {
+        //given
+        Member member = Member.builder()
+                .email("test@1234.com")
+                .password("1234")
+                .username("홍길동")
+                .subscription(false)
+                .build();
+        //when
+
+        mongoTemplate.save(member);
+
+        //then
     }
 
 }

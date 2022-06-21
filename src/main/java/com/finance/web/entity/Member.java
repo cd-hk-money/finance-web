@@ -1,39 +1,29 @@
 package com.finance.web.entity;
 
 import lombok.*;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-
-
-import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
-@Entity
 @Getter
 @Builder
+@Document(collection = "members")
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 @ToString(of = {"id", "email", "username"})
-@NamedQuery(
-        name = "Member.findByUsername",
-        query = "select m from Member m where m.username = :username")
-public class Member extends BaseEntity {
+public class Member {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "MEMBER_ID")
-    private Long id;
+    private ObjectId id;
 
-    @Column(nullable = false, length = 100, unique = true)
     private String email;
 
-    @Column(nullable = false, length = 100)
     private String password;
 
-    @Column(nullable = false, length = 50)
     private String username;
 
-    @Column
     private Boolean subscription;
 
 }
