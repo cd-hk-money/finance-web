@@ -9,20 +9,11 @@ import static lombok.AccessLevel.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-public class MemberSaveRequestDto {
+public class SignUpRequestDto {
 
     private String email;
     private String username;
     private String password;
     private Boolean subscription;
-
-    public Member toEntity() {
-        return Member.builder()
-                .email(email)
-                .username(username)
-                .password(password)
-                .subscription(subscription)
-                .build();
-    }
 
 }
