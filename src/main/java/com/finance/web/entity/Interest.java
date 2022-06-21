@@ -10,26 +10,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import static lombok.AccessLevel.PROTECTED;
 
-
 @Builder
 @Getter
-@Document(collection = "interests")
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 public class Interest {
 
-
-    @Id
-    private ObjectId id;
-
-    private ObjectId interestGroupId;
-
     private String stockCode;
-
     private String stockName;
-
-    private Integer sequence;
-
-    private Boolean notification;
 
 }

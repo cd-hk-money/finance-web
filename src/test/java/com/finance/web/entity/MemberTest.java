@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.annotation.Rollback;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,6 +31,16 @@ class MemberTest {
         mongoTemplate.save(member);
 
         //then
+    }
+
+    @Test
+    void notification() {
+        Query query = new Query(new Criteria().andOperator(
+                Criteria.where("email").is("test@1234.com")
+        ));
+
+        Member member = mongoTemplate.findOne(query, Member.class);
+
     }
 
 }
