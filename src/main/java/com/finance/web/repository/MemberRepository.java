@@ -10,7 +10,6 @@ import java.util.List;
 
 public interface MemberRepository extends MongoRepository<Member, ObjectId>, CustomMemberRepository {
 
-
     @Query("{notification: { all: #{#stockCode}}}")
     List<Member> findByStockCodeInNotifications(@Param("stockCode") String stockCode);
 

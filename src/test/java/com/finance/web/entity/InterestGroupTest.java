@@ -26,19 +26,18 @@ class InterestGroupTest {
     @BeforeEach
     void init() {
         Query query = new Query(new Criteria().andOperator(
-                Criteria.where("email").is("test@1234.com")
-        ));
+                Criteria.where("email").is("test@1234.com")));
 
         member = mongoTemplate.findOne(query, Member.class);
     }
 
     @Test
-    void test() throws Exception {
+    void create() throws Exception {
         //given
 
         List<Interest> interestList = new ArrayList<>();
 
-        Interest one = new Interest( "005930", "삼성전자");
+        Interest one = new Interest("005930", "삼성전자");
         Interest two = new Interest("066570", "LG전자");
         Interest three = new Interest("079370", "제우스");
         Interest four = new Interest("005930", "SK하이닉스");

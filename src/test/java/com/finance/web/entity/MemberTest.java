@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.HashSet;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -21,9 +23,10 @@ class MemberTest {
     void basic_test() throws Exception {
         //given
         Member member = Member.builder()
-                .email("test@1234.com")
+                .email("wkdwoo@admin.com")
                 .password("1234")
-                .username("홍길동")
+                .username("장재영")
+                .notifications(new HashSet<>())
                 .subscription(false)
                 .build();
         //when

@@ -139,7 +139,7 @@ class InterestGroupRepositoryTest {
     @Test
     void deleteInterestFromGroup() throws Exception {
         //given
-        Interest item = new Interest("7654321", "x테스트x");
+        Interest item = new Interest("123456", "테스트테스트");
         ObjectId objectId = new ObjectId("62b1759d92353f579c9844db");
 
         //when
