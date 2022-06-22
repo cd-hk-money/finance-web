@@ -43,6 +43,7 @@ class InterestGroupRepositoryTest {
         InterestGroup interestGroup = InterestGroup.builder()
                 .name("건설업")
                 .memberId(member.getId())
+                .interests(new ArrayList<>())
                 .build();
 
         //when

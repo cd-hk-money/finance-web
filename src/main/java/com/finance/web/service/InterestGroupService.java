@@ -14,7 +14,7 @@ public interface InterestGroupService {
     // 반환할 때 sort by sequence로 하는게 나을까? 성능고민.
     LinkedHashSet<InterestGroupDto> getInterestGroups(String memberId);
 
-    InterestGroupDto addInterestGroup(String memberId);
+    InterestGroupDto addInterestGroup(InterestGroupDto interestGroupDto);
 
     InterestGroupDto updateInterestGroupName(String interestGroupId, String changeName);
 

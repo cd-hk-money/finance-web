@@ -3,6 +3,7 @@ package com.finance.web.service;
 import com.finance.web.domain.Interest;
 import com.finance.web.domain.InterestGroup;
 import com.finance.web.dto.InterestGroupDto;
+import com.finance.web.dto.InterestGroupSaveDto;
 import com.finance.web.repository.InterestGroupRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,9 @@ public class InterestGroupServiceImpl implements InterestGroupService {
     }
 
     @Override
-    public InterestGroupDto addInterestGroup(String memberId) {
-        return null;
+    public InterestGroupDto addInterestGroup(InterestGroupDto interestGroupDto) {
+
+        return interestGroupRepository.save(interestGroupDto.toDocument()).toDto();
     }
 
     @Override

@@ -11,7 +11,5 @@ public interface CustomInterestGroupRepository {
     void addInterest(ObjectId interestGroupId, Interest item);
 
     void deleteInterest(ObjectId interestGroupId, Interest item);
-
-    LinkedHashSet<InterestGroupDto> findByMemberId(ObjectId memberId);
 }
 

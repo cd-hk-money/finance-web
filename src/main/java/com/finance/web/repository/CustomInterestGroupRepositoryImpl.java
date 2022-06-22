@@ -16,13 +16,6 @@ public class CustomInterestGroupRepositoryImpl implements CustomInterestGroupRep
 
     private final MongoTemplate mongoTemplate;
 
-    @Override
-    public LinkedHashSet<InterestGroupDto> findByMemberId(ObjectId memberId) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("_id"));
-        return null;
-    }
-
     public void addInterest(ObjectId interestGroupId, Interest item) {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(interestGroupId));
