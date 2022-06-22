@@ -1,4 +1,4 @@
-package com.finance.web.entity;
+package com.finance.web.domain;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +9,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.HashSet;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Rollback(value = true)

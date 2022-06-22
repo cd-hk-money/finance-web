@@ -1,6 +1,6 @@
 package com.finance.web.repository;
 
-import com.finance.web.entity.InterestGroup;
+import com.finance.web.domain.InterestGroup;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

@@ -1,6 +1,6 @@
 package com.finance.web.repository;
 
-import com.finance.web.entity.Interest;
+import com.finance.web.domain.Interest;
 import org.bson.types.ObjectId;
 
 public interface CustomInterestGroupRepository {

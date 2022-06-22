@@ -1,4 +1,4 @@
-package com.finance.web.entity;
+package com.finance.web.domain;
 
 import lombok.*;
 import org.bson.types.ObjectId;
@@ -20,11 +20,8 @@ public class InterestGroup {
     private ObjectId id;
 
     private String name;
-
     private Integer sequence;
-
     private List<Interest> interests;
-
     private ObjectId memberId;
 
 }

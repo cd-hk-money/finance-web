@@ -1,7 +1,11 @@
 package com.finance.web.dto;
 
+import com.finance.web.domain.Interest;
 import lombok.*;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+
+import java.util.List;
 
 import static lombok.AccessLevel.*;
 
@@ -13,5 +17,5 @@ public class InterestGroupDto {
     private ObjectId id;
     private String name;
     private Integer sequence;
-    private ObjectId memberId;
+    private List<Interest> interests;
 }

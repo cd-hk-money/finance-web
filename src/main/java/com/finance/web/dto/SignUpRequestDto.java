@@ -1,6 +1,5 @@
 package com.finance.web.dto;
 
-import com.finance.web.entity.Member;
 import lombok.*;
 
 import static lombok.AccessLevel.*;

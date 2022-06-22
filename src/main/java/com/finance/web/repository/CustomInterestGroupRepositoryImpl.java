@@ -1,6 +1,6 @@
 package com.finance.web.repository;
 
-import com.finance.web.entity.Interest;
+import com.finance.web.domain.Interest;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;

@@ -1,6 +1,6 @@
 package com.finance.web.repository;
 
-import com.finance.web.entity.Member;
+import com.finance.web.domain.Member;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.HashSet;
-import java.util.List;
 
 @SpringBootTest
 class MemberRepositoryTest {

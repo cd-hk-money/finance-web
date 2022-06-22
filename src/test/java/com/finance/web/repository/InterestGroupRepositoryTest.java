@@ -1,16 +1,14 @@
 package com.finance.web.repository;
 
-import com.finance.web.dto.InterestEnrollRequestDto;
-import com.finance.web.entity.Interest;
-import com.finance.web.entity.InterestGroup;
-import com.finance.web.entity.Member;
+import com.finance.web.domain.Interest;
+import com.finance.web.domain.InterestGroup;
+import com.finance.web.domain.Member;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -18,8 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class InterestGroupRepositoryTest {
