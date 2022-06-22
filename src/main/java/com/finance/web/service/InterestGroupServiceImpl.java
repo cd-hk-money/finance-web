@@ -1,8 +1,10 @@
 package com.finance.web.service;
 
 import com.finance.web.domain.Interest;
+import com.finance.web.domain.InterestGroup;
 import com.finance.web.dto.InterestGroupDto;
 import com.finance.web.repository.InterestGroupRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -10,17 +12,18 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class InterestGroupServiceImpl implements InterestGroupService {
 
-    private static InterestGroupRepository interestGroupRepository;
+    private final InterestGroupRepository interestGroupRepository;
 
     @Override
     public LinkedHashSet<InterestGroupDto> getInterestGroups(String memberId) {
 
-        return null;
+        return interestGroupRepository.findInterestGroupsByMemberId(toObjectId(memberId));
     }
 
     @Override
@@ -60,6 +63,6 @@ public class InterestGroupServiceImpl implements InterestGroupService {
 
     @Override
     public ObjectId toObjectId(String id) {
-        return null;
+        return new ObjectId(id);
     }
 }

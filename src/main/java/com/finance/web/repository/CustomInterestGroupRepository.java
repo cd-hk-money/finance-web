@@ -1,7 +1,10 @@
 package com.finance.web.repository;
 
 import com.finance.web.domain.Interest;
+import com.finance.web.dto.InterestGroupDto;
 import org.bson.types.ObjectId;
+
+import java.util.LinkedHashSet;
 
 public interface CustomInterestGroupRepository {
 
@@ -9,5 +12,6 @@ public interface CustomInterestGroupRepository {
 
     void deleteInterest(ObjectId interestGroupId, Interest item);
 
+    LinkedHashSet<InterestGroupDto> findByMemberId(ObjectId memberId);
 }
 
