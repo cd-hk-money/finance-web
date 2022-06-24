@@ -2,14 +2,20 @@ package com.finance.web.repository;
 
 import com.finance.web.domain.Interest;
 import com.finance.web.dto.InterestGroupDto;
+import com.finance.web.dto.InterestGroupUpdateDto;
 import org.bson.types.ObjectId;
 
-import java.util.LinkedHashSet;
+import java.util.List;
+
 
 public interface CustomInterestGroupRepository {
 
-    void addInterest(ObjectId interestGroupId, Interest item);
+    boolean addInterestToGroup(ObjectId interestGroupId, Interest item);
 
-    void deleteInterest(ObjectId interestGroupId, Interest item);
+    boolean deleteInterestFromGroup(ObjectId interestGroupId, Interest item);
+
+    boolean updateInterestGroup(ObjectId interestGroupId, InterestGroupUpdateDto updateDto);
+
+    InterestGroupDto updateInterests(ObjectId interestGroupId, List<Interest> interests);
 }
 

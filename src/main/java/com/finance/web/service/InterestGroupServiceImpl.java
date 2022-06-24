@@ -3,17 +3,13 @@ package com.finance.web.service;
 import com.finance.web.domain.Interest;
 import com.finance.web.domain.InterestGroup;
 import com.finance.web.dto.InterestGroupDto;
-import com.finance.web.dto.InterestGroupSaveDto;
+import com.finance.web.dto.InterestGroupUpdateDto;
 import com.finance.web.repository.InterestGroupRepository;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,33 +30,36 @@ public class InterestGroupServiceImpl implements InterestGroupService {
     }
 
     @Override
-    public InterestGroupDto updateInterestGroupName(String interestGroupId, String changeName) {
-        return null;
+    public boolean updateInterestGroup(String interestGroupId, InterestGroupUpdateDto updateDto) {
+        Optional<InterestGroup> groupOptional = interestGroupRepository.findById(toObjectId(interestGroupId));
+        if (groupOptional.isPresent())
+            return interestGroupRepository.updateInterestGroup(toObjectId(interestGroupId), updateDto);
+        return false;
     }
 
     @Override
-    public LinkedHashSet<InterestGroupDto> changeGroupSequence(HashMap<String, Integer> items) {
-        return null;
+    public boolean deleteInterestGroup(String interestGroupId) {
+        Optional<InterestGroup> groupOptional = interestGroupRepository.findById(toObjectId(interestGroupId));
+        if (groupOptional.isPresent()) {
+            interestGroupRepository.delete(groupOptional.get());
+            return interestGroupRepository.findById(toObjectId(interestGroupId)).isEmpty();
+        }
+        return false;
     }
 
     @Override
-    public void deleteInterestGroup(String interestGroupId) {
-
+    public boolean addInterest(String interestGroupId, Interest interest) {
+        return interestGroupRepository.addInterestToGroup(toObjectId(interestGroupId), interest);
     }
 
     @Override
-    public Interest addInterest(String interest) {
-        return null;
+    public boolean popInterest(String interestGroupId, Interest interest) {
+        return interestGroupRepository.deleteInterestFromGroup(toObjectId(interestGroupId), interest);
     }
 
     @Override
-    public void popInterest(String interest) {
-
-    }
-
-    @Override
-    public InterestGroupDto changeInterestSequenceInGroup(String interestGroup, HashSet<Interest> interests) {
-        return null;
+    public InterestGroupDto changeInterestsSequenceInGroup(String interestGroupId, List<Interest> interests) {
+        return interestGroupRepository.updateInterests(toObjectId(interestGroupId), interests);
     }
 
     @Override

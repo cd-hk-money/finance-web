@@ -89,7 +89,7 @@ class InterestGroupRepositoryTest {
         ObjectId objectId = new ObjectId("62b1759d92353f579c9844db");
 
         //when
-        interestGroupRepository.addInterest(objectId, item);
+        interestGroupRepository.addInterestToGroup(objectId, item);
 
         //then
         Optional<InterestGroup> byId = interestGroupRepository.findById(objectId);
@@ -140,7 +140,7 @@ class InterestGroupRepositoryTest {
         ObjectId objectId = new ObjectId("62b1759d92353f579c9844db");
 
         //when
-        interestGroupRepository.deleteInterest(objectId, item);
+        interestGroupRepository.deleteInterestFromGroup(objectId, item);
 
         //then
         Optional<InterestGroup> byId = interestGroupRepository.findById(objectId);

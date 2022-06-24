@@ -25,6 +25,10 @@ public class InterestGroup {
     private List<Interest> interests;
     private ObjectId memberId;
 
+    public void setInterests(List<Interest> interests) {
+        this.interests = interests;
+    }
+
     public InterestGroupDto toDto() {
         return InterestGroupDto.builder()
                 .name(name)
