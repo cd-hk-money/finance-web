@@ -2,18 +2,17 @@ package com.finance.web.dto;
 
 import lombok.*;
 
-import java.util.HashSet;
-
 import static lombok.AccessLevel.*;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-public class InterestGroupResponseDto {
+public class SignUpRequestDto {
 
-    private Long id;
-    private String name;
-    private HashSet<InterestResponseDto> item;
+    private String email;
+    private String username;
+    private String password;
+    private Boolean subscription;
 
 }

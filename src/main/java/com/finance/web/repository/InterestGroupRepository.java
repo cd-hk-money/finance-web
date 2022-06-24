@@ -1,20 +1,15 @@
 package com.finance.web.repository;
 
-import com.finance.web.entity.InterestGroup;
-import com.finance.web.entity.Member;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import com.finance.web.domain.InterestGroup;
+import com.finance.web.dto.InterestGroupDto;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.List;
+import java.util.LinkedHashSet;
 
-public interface InterestGroupRepository extends JpaRepository<InterestGroup, Long> {
+public interface InterestGroupRepository extends MongoRepository<InterestGroup, ObjectId>, CustomInterestGroupRepository {
 
-    @Query("select i from InterestGroup i where i.member = :member")
-    List<InterestGroup> findAllByMember(@Param("member") Member member);
+    LinkedHashSet<InterestGroupDto> findInterestGroupsByMemberId(ObjectId memberId);
 
-    @Modifying
-    @Query("update InterestGroup i set i.name =:name where i.id =:id")
-    void updateName(@Param("id") Long id, @Param("name") String name);
+    LinkedHashSet<InterestGroupDto> findInterestsGroupsAndInterestsByMemberId(ObjectId memberId);
 }

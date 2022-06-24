@@ -1,79 +1,69 @@
 package com.finance.web.service;
 
+import com.finance.web.domain.Interest;
+import com.finance.web.domain.InterestGroup;
 import com.finance.web.dto.InterestGroupDto;
-import com.finance.web.dto.InterestGroupResponseDto;
-import com.finance.web.dto.InterestResponseDto;
-import com.finance.web.entity.Interest;
-import com.finance.web.entity.InterestGroup;
-import com.finance.web.entity.Member;
+import com.finance.web.dto.InterestGroupUpdateDto;
 import com.finance.web.repository.InterestGroupRepository;
-import com.finance.web.repository.MemberRepository;
-import com.finance.web.service.mapper.InterestGroupMapper;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class InterestGroupServiceImpl implements InterestGroupService {
 
     private final InterestGroupRepository interestGroupRepository;
-    private final InterestService interestService;
-    private final MemberRepository memberRepository;
-    private final InterestGroupMapper interestGroupMapper;
 
-    public InterestGroupDto create(Long memberId, InterestGroupDto interestGroupDto) {
-        Optional<Member> optionalMember = memberRepository.findOneById(memberId);
-        if (optionalMember.isPresent()) {
-            InterestGroup interestGroup = interestGroupMapper.toEntity(interestGroupDto);
-            InterestGroup save = interestGroupRepository.save(interestGroup);
-            return interestGroupMapper.toDto(save);
-        }
-        return null;
+    @Override
+    public LinkedHashSet<InterestGroupDto> getInterestGroups(String memberId) {
+
+        return interestGroupRepository.findInterestGroupsByMemberId(toObjectId(memberId));
     }
 
     @Override
-    public List<InterestGroupResponseDto> getInterestGroups(Long memberId) {
-        List<InterestGroupResponseDto> responseDtos = new ArrayList<>();
-        Optional<Member> optionalMember = memberRepository.findById(memberId);
+    public InterestGroupDto addInterestGroup(InterestGroupDto interestGroupDto) {
 
-        if (optionalMember.isPresent()) {
-            Member member = optionalMember.get();
-            List<InterestGroup> interestGroups = interestGroupRepository.findAllByMember(member);
-
-            for (InterestGroup interestGroup : interestGroups) {
-                Long id = interestGroup.getId();
-                String name = interestGroup.getName();
-                HashSet<InterestResponseDto> item = (HashSet<InterestResponseDto>) interestService.getInterests(interestGroupMapper.toDto(interestGroup)).stream()
-                        .map(Interest::toResponseDto)
-                        .collect(Collectors.toSet());
-                responseDtos.add(new InterestGroupResponseDto(id, name, item));
-            }
-            return responseDtos;
-        }
-        return null;
+        return interestGroupRepository.save(interestGroupDto.toDocument()).toDto();
     }
 
-    public void delete(Long groupId) {
-        Optional<InterestGroup> optionalInterestGroup = interestGroupRepository.findById(groupId);
-        if (optionalInterestGroup.isPresent()) {
-            InterestGroup interestGroup = optionalInterestGroup.get();
-            interestGroupRepository.delete(interestGroup);
-        }
+    @Override
+    public boolean updateInterestGroup(String interestGroupId, InterestGroupUpdateDto updateDto) {
+        Optional<InterestGroup> groupOptional = interestGroupRepository.findById(toObjectId(interestGroupId));
+        if (groupOptional.isPresent())
+            return interestGroupRepository.updateInterestGroup(toObjectId(interestGroupId), updateDto);
+        return false;
     }
 
-    public void updateName(Long interestGroupId, String name) {
-        Optional<InterestGroup> optionalInterestGroup = interestGroupRepository.findById(interestGroupId);
-        if (optionalInterestGroup.isPresent()) {
-            interestGroupRepository.updateName(interestGroupId, name);
+    @Override
+    public boolean deleteInterestGroup(String interestGroupId) {
+        Optional<InterestGroup> groupOptional = interestGroupRepository.findById(toObjectId(interestGroupId));
+        if (groupOptional.isPresent()) {
+            interestGroupRepository.delete(groupOptional.get());
+            return interestGroupRepository.findById(toObjectId(interestGroupId)).isEmpty();
         }
+        return false;
     }
 
-    public void changeSequence(Integer sequence) {
+    @Override
+    public boolean addInterest(String interestGroupId, Interest interest) {
+        return interestGroupRepository.addInterestToGroup(toObjectId(interestGroupId), interest);
+    }
 
+    @Override
+    public boolean popInterest(String interestGroupId, Interest interest) {
+        return interestGroupRepository.deleteInterestFromGroup(toObjectId(interestGroupId), interest);
+    }
+
+    @Override
+    public InterestGroupDto changeInterestsSequenceInGroup(String interestGroupId, List<Interest> interests) {
+        return interestGroupRepository.updateInterests(toObjectId(interestGroupId), interests);
+    }
+
+    @Override
+    public ObjectId toObjectId(String id) {
+        return new ObjectId(id);
     }
 }

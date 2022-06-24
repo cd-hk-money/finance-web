@@ -1,135 +1,155 @@
 package com.finance.web.repository;
 
-import com.finance.web.entity.InterestGroup;
-import com.finance.web.entity.Member;
+import com.finance.web.domain.Interest;
+import com.finance.web.domain.InterestGroup;
+import com.finance.web.domain.Member;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
-import javax.persistence.EntityManager;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @SpringBootTest
-@Transactional
 class InterestGroupRepositoryTest {
 
     @Autowired
     InterestGroupRepository interestGroupRepository;
 
     @Autowired
-    MemberRepository memberRepository;
-
-    @Autowired
-    EntityManager em;
+    MongoTemplate mongoTemplate;
 
     Member member;
 
-
     @BeforeEach
     void init() {
-        Member member = Member.builder()
-                .email("email@test.com")
-                .password("1234")
-                .username("john doe").build();
+        Query query = new Query(new Criteria().andOperator(
+                Criteria.where("email").is("test@1234.com")
+        ));
 
-        memberRepository.save(member);
+        member = mongoTemplate.findOne(query, Member.class);
     }
 
     @Test
-    void create() {
-        InterestGroup IL = InterestGroup.builder()
-                .name("반도체")
-                .member(member)
-                .sequence(1)
-                .build();
-
-        InterestGroup savedIL = interestGroupRepository.save(IL);
-
-        assertThat(savedIL.getId()).isEqualTo(IL.getId());
-    }
-
-    @Test
-    void read() throws Exception {
+    void createOnlyInterestGroup() throws Exception {
         //given
-        InterestGroup IL = InterestGroup.builder()
-                .name("반도체")
-                .member(member)
-                .sequence(1)
+        InterestGroup interestGroup = InterestGroup.builder()
+                .name("건설업")
+                .memberId(member.getId())
+                .interests(new ArrayList<>())
                 .build();
-
-        InterestGroup savedIL = interestGroupRepository.save(IL);
 
         //when
-        List<InterestGroup> findILs = interestGroupRepository.findAllByMember(member);
+        interestGroupRepository.save(interestGroup);
 
         //then
-        assertThat(findILs.get(0)).isEqualTo(savedIL);
 
-        for (InterestGroup findIL : findILs) {
-            assertThat(findIL.getMember().getId()).isEqualTo(member.getId());
+    }
+
+
+    @Test
+    void createInterestGroup() throws Exception {
+        //given
+
+        List<Interest> interestList = new ArrayList<>();
+
+        Interest one = new Interest("005930", "삼성중공업");
+        Interest two = new Interest("066570", "두산중공업");
+        Interest three = new Interest("079370", "현대중공업");
+
+        for (Interest interest : Arrays.asList(one, two, three)) {
+            interestList.add(interest);
+        }
+
+        InterestGroup interestGroup = InterestGroup.builder()
+                .name("중공업")
+                .memberId(member.getId())
+                .interests(interestList)
+                .build();
+        //when
+
+        interestGroupRepository.save(interestGroup);
+        //then
+
+    }
+
+    @Test
+    void addInterestToGroup() throws Exception {
+        //given
+        //Document document = new Document()
+
+        Interest item = new Interest("7654321", "x테스트x");
+        ObjectId objectId = new ObjectId("62b1759d92353f579c9844db");
+
+        //when
+        interestGroupRepository.addInterestToGroup(objectId, item);
+
+        //then
+        Optional<InterestGroup> byId = interestGroupRepository.findById(objectId);
+        if (byId.isPresent()) {
+            List<Interest> interests = byId.get().getInterests();
+            interests.stream().map(interest -> "interest.getStockCode() = "
+                    + interest.getStockCode()).forEach(System.out::println);
         }
     }
 
+
     @Test
-    void update() {
+    void findInterestGroupByGroupId() throws Exception {
         //given
-        InterestGroup IL = com.finance.web.entity.InterestGroup.builder()
-                .name("반도체")
-                .member(member)
-                .sequence(1)
-                .build();
-
-        interestGroupRepository.save(IL);
-
-        em.flush();
-        em.clear();
-
+        ObjectId objectId = new ObjectId("62b1759d92353f579c9844db");
+        Optional<InterestGroup> byId = interestGroupRepository.findById(objectId);
         //when
-        interestGroupRepository.updateName(IL.getId(), "부동산"); // 쿼리
 
-        em.flush();
-        em.clear();
-
-        Optional<InterestGroup> findIL = interestGroupRepository.findById(IL.getId());
-        assertThat(findIL).isPresent();
-
+        if (byId.isPresent()) {
+            InterestGroup interestGroup = byId.get();
+            System.out.println("interestGroup.interestGroup.getId() = " + interestGroup.getId());
+            System.out.println("interestGroup.getName() = " + interestGroup.getName());
+        }
         //then
-        assertThat(findIL.get().getName()).isEqualTo("부동산");
 
-        System.out.println("findIL = " + findIL.get().getName());
-        System.out.println("findIL.sequence = " + findIL.get().getSequence());
     }
 
     @Test
-    void delete() throws Exception {
+    void findInterestGroupByUserId() throws Exception {
         //given
+        ObjectId objectId = member.getId();
+        Optional<InterestGroup> byId = interestGroupRepository.findById(objectId);
+        //when
 
-        InterestGroup IL = InterestGroup.builder()
-                .name("반도체")
-                .member(member)
-                .sequence(1)
-                .build();
+        if (byId.isPresent()) {
+            InterestGroup interestGroup = byId.get();
+            System.out.println("interestGroup = " + interestGroup);
+            System.out.println("interestGroup.getInterests() = " + interestGroup.getInterests());
+        }
+        //then
+    }
 
-        InterestGroup savedIL = interestGroupRepository.save(IL);
 
-        Long ilId = IL.getId();
+    @Test
+    void deleteInterestFromGroup() throws Exception {
+        //given
+        Interest item = new Interest("123456", "테스트테스트");
+        ObjectId objectId = new ObjectId("62b1759d92353f579c9844db");
 
         //when
-        Optional<InterestGroup> findIL = interestGroupRepository.findById(ilId);
-        assertThat(findIL).isPresent();
-
-        findIL.ifPresent(selectedIL -> {
-            interestGroupRepository.delete(savedIL);
-        });
+        interestGroupRepository.deleteInterestFromGroup(objectId, item);
 
         //then
-        assertThat(interestGroupRepository.findById(ilId)).isEmpty();
-        System.out.println("savedIL = " + savedIL);
+        Optional<InterestGroup> byId = interestGroupRepository.findById(objectId);
+        if (byId.isPresent()) {
+            List<Interest> interests = byId.get().getInterests();
+            interests.stream().map(interest -> "interest.getStockCode() = "
+                    + interest.getStockCode()).forEach(System.out::println);
+        }
     }
+
+
 }

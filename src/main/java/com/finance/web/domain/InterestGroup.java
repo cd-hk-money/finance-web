@@ -1,10 +1,10 @@
-package com.finance.web.dto;
+package com.finance.web.domain;
 
-import com.finance.web.domain.Interest;
-import com.finance.web.domain.InterestGroup;
+import com.finance.web.dto.InterestGroupDto;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
@@ -12,21 +12,30 @@ import static lombok.AccessLevel.*;
 
 @Getter
 @Builder
+@Document(collection = "interestGroups")
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-public class InterestGroupDto {
+public class InterestGroup {
+
+    @Id
     private ObjectId id;
+
     private String name;
     private Integer sequence;
     private List<Interest> interests;
-    private String memberId;
+    private ObjectId memberId;
 
-    public InterestGroup toDocument() {
-        return InterestGroup.builder()
+    public void setInterests(List<Interest> interests) {
+        this.interests = interests;
+    }
+
+    public InterestGroupDto toDto() {
+        return InterestGroupDto.builder()
                 .name(name)
                 .sequence(sequence)
                 .interests(interests)
-                .memberId(new ObjectId(memberId))
+                .memberId(String.valueOf(memberId))
                 .build();
     }
+
 }
