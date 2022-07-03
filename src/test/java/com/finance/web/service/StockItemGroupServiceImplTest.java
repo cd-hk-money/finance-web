@@ -12,10 +12,8 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.LinkedHashSet;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
-class InterestGroupServiceImplTest {
+class StockItemGroupServiceImplTest {
 
     @Autowired
     InterestGroupService interestGroupService;
@@ -44,7 +42,7 @@ class InterestGroupServiceImplTest {
 
         //then
         interestGroups.stream().map(interestGroup -> "interestGroup = " + interestGroup.getName()).forEach(System.out::println);
-        interestGroups.stream().map(interestGroup -> "interestGroup = " + interestGroup.getInterests().size()).forEach(System.out::println);
+        interestGroups.stream().map(interestGroup -> "interestGroup = " + interestGroup.getStockItems().size()).forEach(System.out::println);
     }
 
 }

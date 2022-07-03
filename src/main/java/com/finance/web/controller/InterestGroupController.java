@@ -1,8 +1,10 @@
 package com.finance.web.controller;
 
+import com.finance.web.vo.StockItem;
 import com.finance.web.dto.InterestGroupDto;
 import com.finance.web.dto.InterestGroupUpdateDto;
 import com.finance.web.service.InterestGroupService;
+import com.finance.web.vo.StockItems;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +37,7 @@ public class InterestGroupController {
 
     @ResponseBody
     @RequestMapping(value = "/member/{userId}/group/{groupId}", method = PUT)
-    public ResponseEntity<Void> interestGroupModify(@PathVariable String userId, @PathVariable String groupId, @RequestBody InterestGroupUpdateDto updateDto) {
+    public ResponseEntity<String> interestGroupModify(@PathVariable String userId, @PathVariable String groupId, @RequestBody InterestGroupUpdateDto updateDto) {
 
         return interestGroupService.updateInterestGroup(groupId, updateDto)
                 ? ResponseEntity.status(HttpStatus.CREATED).build() : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -43,9 +45,31 @@ public class InterestGroupController {
 
     @ResponseBody
     @RequestMapping(value = "/member/{userId}/group/{groupId}", method = DELETE)
-    public ResponseEntity<Void> interestGroupRemove(@PathVariable String userId, @PathVariable String groupId) {
+    public ResponseEntity<String> interestGroupRemove(@PathVariable String userId, @PathVariable String groupId) {
 
         return interestGroupService.deleteInterestGroup(groupId) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/member/{userId}/group/{groupId}/interest", method = POST)
+    public ResponseEntity<String> interestAddToGroup(@PathVariable String userId, @PathVariable String groupId, @RequestBody StockItem stockItem) {
+
+        return interestGroupService.addInterest(groupId, stockItem) ?
+                ResponseEntity.status(HttpStatus.CREATED).build() : ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/member/{userId}/group/{groupId}/interest", method = PUT)
+    public ResponseEntity<InterestGroupDto> interestModifySequenceInGroup(@PathVariable String userId, @PathVariable String groupId, @RequestBody StockItems stockItems) {
+        return new ResponseEntity<InterestGroupDto>(interestGroupService.changeInterestsSequenceInGroup(groupId, stockItems.getStockItems()), HttpStatus.CREATED);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/member/{userId}/group/{groupId}/interest", method = DELETE)
+    public ResponseEntity<String> interestRemove(@PathVariable String userId, @PathVariable String groupId, @RequestBody StockItem stockItem) {
+
+        return interestGroupService.popInterest(groupId, stockItem) ?
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build() : ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.finance.web.repository;
 
-import com.finance.web.domain.Interest;
+import com.finance.web.vo.StockItem;
 import com.finance.web.domain.InterestGroup;
 import com.finance.web.domain.Member;
 import org.bson.types.ObjectId;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
-class InterestGroupRepositoryTest {
+class StockItemGroupRepositoryTest {
 
     @Autowired
     InterestGroupRepository interestGroupRepository;
@@ -43,7 +43,7 @@ class InterestGroupRepositoryTest {
         InterestGroup interestGroup = InterestGroup.builder()
                 .name("건설업")
                 .memberId(member.getId())
-                .interests(new ArrayList<>())
+                .stockItems(new ArrayList<>())
                 .build();
 
         //when
@@ -58,20 +58,20 @@ class InterestGroupRepositoryTest {
     void createInterestGroup() throws Exception {
         //given
 
-        List<Interest> interestList = new ArrayList<>();
+        List<StockItem> stockItemList = new ArrayList<>();
 
-        Interest one = new Interest("005930", "삼성중공업");
-        Interest two = new Interest("066570", "두산중공업");
-        Interest three = new Interest("079370", "현대중공업");
+        StockItem one = new StockItem("005930", "삼성중공업");
+        StockItem two = new StockItem("066570", "두산중공업");
+        StockItem three = new StockItem("079370", "현대중공업");
 
-        for (Interest interest : Arrays.asList(one, two, three)) {
-            interestList.add(interest);
+        for (StockItem stockItem : Arrays.asList(one, two, three)) {
+            stockItemList.add(stockItem);
         }
 
         InterestGroup interestGroup = InterestGroup.builder()
                 .name("중공업")
                 .memberId(member.getId())
-                .interests(interestList)
+                .stockItems(stockItemList)
                 .build();
         //when
 
@@ -85,7 +85,7 @@ class InterestGroupRepositoryTest {
         //given
         //Document document = new Document()
 
-        Interest item = new Interest("7654321", "x테스트x");
+        StockItem item = new StockItem("7654321", "x테스트x");
         ObjectId objectId = new ObjectId("62b1759d92353f579c9844db");
 
         //when
@@ -94,8 +94,8 @@ class InterestGroupRepositoryTest {
         //then
         Optional<InterestGroup> byId = interestGroupRepository.findById(objectId);
         if (byId.isPresent()) {
-            List<Interest> interests = byId.get().getInterests();
-            interests.stream().map(interest -> "interest.getStockCode() = "
+            List<StockItem> stockItems = byId.get().getStockItems();
+            stockItems.stream().map(interest -> "interest.getStockCode() = "
                     + interest.getStockCode()).forEach(System.out::println);
         }
     }
@@ -127,7 +127,7 @@ class InterestGroupRepositoryTest {
         if (byId.isPresent()) {
             InterestGroup interestGroup = byId.get();
             System.out.println("interestGroup = " + interestGroup);
-            System.out.println("interestGroup.getInterests() = " + interestGroup.getInterests());
+            System.out.println("interestGroup.getInterests() = " + interestGroup.getStockItems());
         }
         //then
     }
@@ -136,7 +136,7 @@ class InterestGroupRepositoryTest {
     @Test
     void deleteInterestFromGroup() throws Exception {
         //given
-        Interest item = new Interest("123456", "테스트테스트");
+        StockItem item = new StockItem("123456", "테스트테스트");
         ObjectId objectId = new ObjectId("62b1759d92353f579c9844db");
 
         //when
@@ -145,8 +145,8 @@ class InterestGroupRepositoryTest {
         //then
         Optional<InterestGroup> byId = interestGroupRepository.findById(objectId);
         if (byId.isPresent()) {
-            List<Interest> interests = byId.get().getInterests();
-            interests.stream().map(interest -> "interest.getStockCode() = "
+            List<StockItem> stockItems = byId.get().getStockItems();
+            stockItems.stream().map(interest -> "interest.getStockCode() = "
                     + interest.getStockCode()).forEach(System.out::println);
         }
     }

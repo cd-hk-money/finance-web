@@ -1,6 +1,7 @@
 package com.finance.web.domain;
 
 import com.finance.web.dto.InterestGroupDto;
+import com.finance.web.vo.StockItem;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -22,18 +23,18 @@ public class InterestGroup {
 
     private String name;
     private Integer sequence;
-    private List<Interest> interests;
+    private List<StockItem> stockItems;
     private ObjectId memberId;
 
-    public void setInterests(List<Interest> interests) {
-        this.interests = interests;
+    public void setStockItems(List<StockItem> stockItems) {
+        this.stockItems = stockItems;
     }
 
     public InterestGroupDto toDto() {
         return InterestGroupDto.builder()
                 .name(name)
                 .sequence(sequence)
-                .interests(interests)
+                .stockItems(stockItems)
                 .memberId(String.valueOf(memberId))
                 .build();
     }

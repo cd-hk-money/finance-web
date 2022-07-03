@@ -1,17 +1,14 @@
-package com.finance.web.domain;
+package com.finance.web.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import static lombok.AccessLevel.PROTECTED;
 
+@Data
 @Builder
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-public class Interest {
+public class StockItem {
 
     private String stockCode;
     private String stockName;

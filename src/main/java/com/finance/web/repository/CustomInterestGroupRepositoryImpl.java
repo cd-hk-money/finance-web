@@ -1,6 +1,6 @@
 package com.finance.web.repository;
 
-import com.finance.web.domain.Interest;
+import com.finance.web.vo.StockItem;
 import com.finance.web.domain.InterestGroup;
 import com.finance.web.dto.InterestGroupDto;
 import com.finance.web.dto.InterestGroupUpdateDto;
@@ -19,7 +19,7 @@ public class CustomInterestGroupRepositoryImpl implements CustomInterestGroupRep
 
     private final MongoTemplate mongoTemplate;
 
-    public boolean addInterestToGroup(ObjectId interestGroupId, Interest item) {
+    public boolean addInterestToGroup(ObjectId interestGroupId, StockItem item) {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(interestGroupId));
 
@@ -41,7 +41,7 @@ public class CustomInterestGroupRepositoryImpl implements CustomInterestGroupRep
         return mongoTemplate.updateFirst(query, update, InterestGroup.class).wasAcknowledged();
     }
 
-    public boolean deleteInterestFromGroup(ObjectId interestGroupId, Interest item) {
+    public boolean deleteInterestFromGroup(ObjectId interestGroupId, StockItem item) {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(interestGroupId));
 
@@ -52,11 +52,11 @@ public class CustomInterestGroupRepositoryImpl implements CustomInterestGroupRep
     }
 
     @Override
-    public InterestGroupDto updateInterests(ObjectId interestGroupId, List<Interest> interests) {
+    public InterestGroupDto updateInterests(ObjectId interestGroupId, List<StockItem> stockItems) {
         InterestGroup interestGroup = mongoTemplate.findOne(
                 Query.query(Criteria.where("_id").is(interestGroupId)), InterestGroup.class);
 
-        interestGroup.setInterests(interests);
+        interestGroup.setStockItems(stockItems);
         InterestGroup save = mongoTemplate.save(interestGroup);
 
         return save.toDto();

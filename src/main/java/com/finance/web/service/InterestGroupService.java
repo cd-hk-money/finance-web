@@ -1,12 +1,10 @@
 package com.finance.web.service;
 
-import com.finance.web.domain.Interest;
+import com.finance.web.vo.StockItem;
 import com.finance.web.dto.InterestGroupDto;
 import com.finance.web.dto.InterestGroupUpdateDto;
 import org.bson.types.ObjectId;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -21,11 +19,11 @@ public interface InterestGroupService {
 
     boolean deleteInterestGroup(String interestGroupId);
 
-    boolean addInterest(String interestGroupId, Interest interest);
+    boolean addInterest(String interestGroupId, StockItem stockItem);
 
-    boolean popInterest(String interestGroupId, Interest interest);
+    boolean popInterest(String interestGroupId, StockItem stockItem);
 
-    InterestGroupDto changeInterestsSequenceInGroup(String interestGroupId, List<Interest> interests);
+    InterestGroupDto changeInterestsSequenceInGroup(String interestGroupId, List<StockItem> stockItems);
 
     ObjectId toObjectId(String id);
 

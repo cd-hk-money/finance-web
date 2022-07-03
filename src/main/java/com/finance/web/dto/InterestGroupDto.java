@@ -1,16 +1,15 @@
 package com.finance.web.dto;
 
-import com.finance.web.domain.Interest;
+import com.finance.web.vo.StockItem;
 import com.finance.web.domain.InterestGroup;
 import lombok.*;
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
 import static lombok.AccessLevel.*;
 
-@Getter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
@@ -18,14 +17,14 @@ public class InterestGroupDto {
     private ObjectId id;
     private String name;
     private Integer sequence;
-    private List<Interest> interests;
+    private List<StockItem> stockItems;
     private String memberId;
 
     public InterestGroup toDocument() {
         return InterestGroup.builder()
                 .name(name)
                 .sequence(sequence)
-                .interests(interests)
+                .stockItems(stockItems)
                 .memberId(new ObjectId(memberId))
                 .build();
     }

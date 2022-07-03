@@ -1,6 +1,6 @@
 package com.finance.web.service;
 
-import com.finance.web.domain.Interest;
+import com.finance.web.vo.StockItem;
 import com.finance.web.domain.InterestGroup;
 import com.finance.web.dto.InterestGroupDto;
 import com.finance.web.dto.InterestGroupUpdateDto;
@@ -48,18 +48,18 @@ public class InterestGroupServiceImpl implements InterestGroupService {
     }
 
     @Override
-    public boolean addInterest(String interestGroupId, Interest interest) {
-        return interestGroupRepository.addInterestToGroup(toObjectId(interestGroupId), interest);
+    public boolean addInterest(String interestGroupId, StockItem stockItem) {
+        return interestGroupRepository.addInterestToGroup(toObjectId(interestGroupId), stockItem);
     }
 
     @Override
-    public boolean popInterest(String interestGroupId, Interest interest) {
-        return interestGroupRepository.deleteInterestFromGroup(toObjectId(interestGroupId), interest);
+    public boolean popInterest(String interestGroupId, StockItem stockItem) {
+        return interestGroupRepository.deleteInterestFromGroup(toObjectId(interestGroupId), stockItem);
     }
 
     @Override
-    public InterestGroupDto changeInterestsSequenceInGroup(String interestGroupId, List<Interest> interests) {
-        return interestGroupRepository.updateInterests(toObjectId(interestGroupId), interests);
+    public InterestGroupDto changeInterestsSequenceInGroup(String interestGroupId, List<StockItem> stockItems) {
+        return interestGroupRepository.updateInterests(toObjectId(interestGroupId), stockItems);
     }
 
     @Override

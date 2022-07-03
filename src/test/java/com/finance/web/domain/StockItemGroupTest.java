@@ -1,5 +1,6 @@
 package com.finance.web.domain;
 
+import com.finance.web.vo.StockItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
-class InterestGroupTest {
+class StockItemGroupTest {
 
     @Autowired
     MongoTemplate mongoTemplate;
@@ -32,21 +33,21 @@ class InterestGroupTest {
     void create() throws Exception {
         //given
 
-        List<Interest> interestList = new ArrayList<>();
+        List<StockItem> stockItemList = new ArrayList<>();
 
-        Interest one = new Interest("005930", "삼성전자");
-        Interest two = new Interest("066570", "LG전자");
-        Interest three = new Interest("079370", "제우스");
-        Interest four = new Interest("005930", "SK하이닉스");
+        StockItem one = new StockItem("005930", "삼성전자");
+        StockItem two = new StockItem("066570", "LG전자");
+        StockItem three = new StockItem("079370", "제우스");
+        StockItem four = new StockItem("005930", "SK하이닉스");
 
-        for (Interest interest : Arrays.asList(one, two, three, four)) {
-            interestList.add(interest);
+        for (StockItem stockItem : Arrays.asList(one, two, three, four)) {
+            stockItemList.add(stockItem);
         }
 
         InterestGroup interestGroup = InterestGroup.builder()
                 .name("전자")
                 .memberId(member.getId())
-                .interests(interestList)
+                .stockItems(stockItemList)
                 .build();
         //when
 

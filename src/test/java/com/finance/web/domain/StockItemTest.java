@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 @SpringBootTest
-class InterestTest {
+class StockItemTest {
 
     @Autowired
     MongoTemplate mongoTemplate;
