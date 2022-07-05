@@ -16,6 +16,6 @@ public interface CustomInterestGroupRepository {
 
     boolean updateInterestGroup(ObjectId interestGroupId, InterestGroupUpdateDto updateDto);
 
-    InterestGroupDto updateInterests(ObjectId interestGroupId, List<StockItem> stockItems);
+    InterestGroupDto updateInterests(ObjectId interestGroupId, List<StockItem> interests);
 }
 

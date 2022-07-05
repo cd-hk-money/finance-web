@@ -6,6 +6,8 @@ import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 
 import java.util.List;
 
@@ -19,22 +21,26 @@ import static lombok.AccessLevel.*;
 public class InterestGroup {
 
     @Id
-    private ObjectId id;
+    private ObjectId _id;
 
     private String name;
     private Integer sequence;
-    private List<StockItem> stockItems;
+
+    @Field("interests")
+    private List<StockItem> interests;
+
     private ObjectId memberId;
 
     public void setStockItems(List<StockItem> stockItems) {
-        this.stockItems = stockItems;
+        this.interests = stockItems;
     }
 
     public InterestGroupDto toDto() {
         return InterestGroupDto.builder()
+                ._id(_id.toString())
                 .name(name)
                 .sequence(sequence)
-                .stockItems(stockItems)
+                .interests(interests)
                 .memberId(String.valueOf(memberId))
                 .build();
     }

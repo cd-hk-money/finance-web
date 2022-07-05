@@ -52,11 +52,11 @@ public class CustomInterestGroupRepositoryImpl implements CustomInterestGroupRep
     }
 
     @Override
-    public InterestGroupDto updateInterests(ObjectId interestGroupId, List<StockItem> stockItems) {
+    public InterestGroupDto updateInterests(ObjectId interestGroupId, List<StockItem> interests) {
         InterestGroup interestGroup = mongoTemplate.findOne(
                 Query.query(Criteria.where("_id").is(interestGroupId)), InterestGroup.class);
 
-        interestGroup.setStockItems(stockItems);
+        interestGroup.setStockItems(interests);
         InterestGroup save = mongoTemplate.save(interestGroup);
 
         return save.toDto();

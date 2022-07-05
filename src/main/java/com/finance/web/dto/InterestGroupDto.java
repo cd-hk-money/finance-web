@@ -14,17 +14,17 @@ import static lombok.AccessLevel.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 public class InterestGroupDto {
-    private ObjectId id;
+    private String _id;
     private String name;
     private Integer sequence;
-    private List<StockItem> stockItems;
+    private List<StockItem> interests;
     private String memberId;
 
     public InterestGroup toDocument() {
         return InterestGroup.builder()
                 .name(name)
                 .sequence(sequence)
-                .stockItems(stockItems)
+                .interests(interests)
                 .memberId(new ObjectId(memberId))
                 .build();
     }

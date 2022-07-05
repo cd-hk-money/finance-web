@@ -4,13 +4,13 @@ import com.finance.web.vo.StockItem;
 import com.finance.web.dto.InterestGroupDto;
 import com.finance.web.dto.InterestGroupUpdateDto;
 import com.finance.web.service.InterestGroupService;
-import com.finance.web.vo.StockItems;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -60,8 +60,8 @@ public class InterestGroupController {
 
     @ResponseBody
     @RequestMapping(value = "/members/{userId}/groups/{groupId}/interest", method = PUT)
-    public ResponseEntity<InterestGroupDto> interestModifySequenceInGroup(@PathVariable String userId, @PathVariable String groupId, @RequestBody StockItems stockItems) {
-        return new ResponseEntity<InterestGroupDto>(interestGroupService.changeInterestsSequenceInGroup(groupId, stockItems.getStockItems()), HttpStatus.CREATED);
+    public ResponseEntity<InterestGroupDto> interestModifySequenceInGroup(@PathVariable String userId, @PathVariable String groupId, @RequestBody List<StockItem> stockItems) {
+        return new ResponseEntity<InterestGroupDto>(interestGroupService.changeInterestsSequenceInGroup(groupId, stockItems ), HttpStatus.CREATED);
     }
 
     @ResponseBody
