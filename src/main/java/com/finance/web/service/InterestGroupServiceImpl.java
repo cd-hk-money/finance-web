@@ -32,19 +32,15 @@ public class InterestGroupServiceImpl implements InterestGroupService {
     @Override
     public boolean updateInterestGroup(String interestGroupId, InterestGroupUpdateDto updateDto) {
         Optional<InterestGroup> groupOptional = interestGroupRepository.findById(toObjectId(interestGroupId));
-        if (groupOptional.isPresent())
-            return interestGroupRepository.updateInterestGroup(toObjectId(interestGroupId), updateDto);
-        return false;
+        groupOptional.orElseThrow(() -> new NoSuchElementException());
+        return interestGroupRepository.updateInterestGroup(toObjectId(interestGroupId), updateDto);
     }
 
     @Override
     public boolean deleteInterestGroup(String interestGroupId) {
         Optional<InterestGroup> groupOptional = interestGroupRepository.findById(toObjectId(interestGroupId));
-        if (groupOptional.isPresent()) {
-            interestGroupRepository.delete(groupOptional.get());
-            return interestGroupRepository.findById(toObjectId(interestGroupId)).isEmpty();
-        }
-        return false;
+        interestGroupRepository.delete(groupOptional.orElseThrow(() -> new NoSuchElementException()));
+        return interestGroupRepository.findById(toObjectId(interestGroupId)).isEmpty();
     }
 
     @Override
