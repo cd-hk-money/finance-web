@@ -22,51 +22,51 @@ public class InterestGroupController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/members/{userId}/groups", method = GET)
-    public ResponseEntity<LinkedHashSet<InterestGroupDto>> interestGroupList(@PathVariable String userId) {
+    @RequestMapping(value = "/members/{memberId}/groups", method = GET)
+    public ResponseEntity<LinkedHashSet<InterestGroupDto>> interestGroupList(@PathVariable String memberId) {
 
-        return ResponseEntity.ok().body(interestGroupService.getInterestGroups(userId));
+        return ResponseEntity.ok().body(interestGroupService.getInterestGroups(memberId));
     }
 
     @ResponseBody
-    @RequestMapping(value = "/members/{userId}/groups", method = POST)
-    public ResponseEntity<InterestGroupDto> interestGroupAdd(@PathVariable String userId, @RequestBody InterestGroupDto interestGroupDto) {
+    @RequestMapping(value = "/members/{memberId}/groups", method = POST)
+    public ResponseEntity<InterestGroupDto> interestGroupAdd(@PathVariable String memberId, @RequestBody InterestGroupDto interestGroupDto) {
 
         return new ResponseEntity<InterestGroupDto>(interestGroupService.addInterestGroup(interestGroupDto), HttpStatus.CREATED);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/members/{userId}/groups/{groupId}", method = PUT)
-    public ResponseEntity<String> interestGroupModify(@PathVariable String userId, @PathVariable String groupId, @RequestBody InterestGroupUpdateDto updateDto) {
+    @RequestMapping(value = "/members/{memberId}/groups/{groupId}", method = PUT)
+    public ResponseEntity<String> interestGroupModify(@PathVariable String memberId, @PathVariable String groupId, @RequestBody InterestGroupUpdateDto updateDto) {
 
         return interestGroupService.updateInterestGroup(groupId, updateDto)
                 ? ResponseEntity.status(HttpStatus.CREATED).build() : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @ResponseBody
-    @RequestMapping(value = "/members/{userId}/groups/{groupId}", method = DELETE)
-    public ResponseEntity<String> interestGroupRemove(@PathVariable String userId, @PathVariable String groupId) {
+    @RequestMapping(value = "/members/{memberId}/groups/{groupId}", method = DELETE)
+    public ResponseEntity<String> interestGroupRemove(@PathVariable String memberId, @PathVariable String groupId) {
 
         return interestGroupService.deleteInterestGroup(groupId) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @ResponseBody
-    @RequestMapping(value = "/members/{userId}/groups/{groupId}/interest", method = POST)
-    public ResponseEntity<String> interestAddToGroup(@PathVariable String userId, @PathVariable String groupId, @RequestBody StockItem stockItem) {
+    @RequestMapping(value = "/members/{memberId}/groups/{groupId}", method = POST)
+    public ResponseEntity<String> interestAddToGroup(@PathVariable String memberId, @PathVariable String groupId, @RequestBody StockItem stockItem) {
 
         return interestGroupService.addInterest(groupId, stockItem) ?
                 ResponseEntity.status(HttpStatus.CREATED).build() : ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @ResponseBody
-    @RequestMapping(value = "/members/{userId}/groups/{groupId}/interest", method = PUT)
-    public ResponseEntity<InterestGroupDto> interestModifySequenceInGroup(@PathVariable String userId, @PathVariable String groupId, @RequestBody List<StockItem> stockItems) {
+    @RequestMapping(value = "/members/{memberId}/groups/{groupId}/interest", method = PUT)
+    public ResponseEntity<InterestGroupDto> interestModifySequenceInGroup(@PathVariable String memberId, @PathVariable String groupId, @RequestBody List<StockItem> stockItems) {
         return new ResponseEntity<InterestGroupDto>(interestGroupService.changeInterestsSequenceInGroup(groupId, stockItems ), HttpStatus.CREATED);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/members/{userId}/groups/{groupId}/interest", method = DELETE)
-    public ResponseEntity<String> interestRemove(@PathVariable String userId, @PathVariable String groupId, @RequestBody StockItem stockItem) {
+    @RequestMapping(value = "/members/{memberId}/groups/{groupId}/interest", method = DELETE)
+    public ResponseEntity<String> interestRemove(@PathVariable String memberId, @PathVariable String groupId, @RequestBody StockItem stockItem) {
 
         return interestGroupService.popInterest(groupId, stockItem) ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() : ResponseEntity.status(HttpStatus.FORBIDDEN).build();
