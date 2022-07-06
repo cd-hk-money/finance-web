@@ -1,5 +1,6 @@
 package com.finance.web.domain;
 
+import com.finance.web.vo.StockItem;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -28,6 +29,6 @@ public class Member {
 
     private Boolean subscription;
 
-    private HashSet<String> notifications;
+    private HashSet<StockItem> notifications;
 
 }

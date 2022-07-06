@@ -1,11 +1,17 @@
 package com.finance.web.repository;
 
+import com.finance.web.vo.StockItem;
 import org.bson.types.ObjectId;
+
+import java.util.HashSet;
 
 public interface CustomMemberRepository {
 
-    void pushItemToNotifications(ObjectId memberId, String item);
+    boolean pushItemToNotifications(ObjectId memberId, StockItem item);
 
-    void deleteItemFromNotifications(ObjectId memberId, String item);
+    boolean deleteItemFromNotifications(ObjectId memberId, StockItem item);
 
+    HashSet<StockItem> findItemInNotifications(ObjectId memberId);
+
+    HashSet<StockItem> findNotificationsByMemberId(ObjectId memberId);
 }

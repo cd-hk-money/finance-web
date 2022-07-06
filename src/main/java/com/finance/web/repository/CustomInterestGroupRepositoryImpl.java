@@ -41,6 +41,7 @@ public class CustomInterestGroupRepositoryImpl implements CustomInterestGroupRep
         return mongoTemplate.updateFirst(query, update, InterestGroup.class).wasAcknowledged();
     }
 
+    @Override
     public boolean deleteInterestFromGroup(ObjectId interestGroupId, StockItem item) {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(interestGroupId));

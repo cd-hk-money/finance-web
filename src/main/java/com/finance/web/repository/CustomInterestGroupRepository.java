@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface CustomInterestGroupRepository {
 
-    boolean addInterestToGroup(ObjectId interestGroupId, StockItem item);
+    boolean addInterestToGroup(ObjectId interestGroupId, StockItem stockItem);
 
-    boolean deleteInterestFromGroup(ObjectId interestGroupId, StockItem item);
+    boolean deleteInterestFromGroup(ObjectId interestGroupId, StockItem stockItem);
 
     boolean updateInterestGroup(ObjectId interestGroupId, InterestGroupUpdateDto updateDto);
 
