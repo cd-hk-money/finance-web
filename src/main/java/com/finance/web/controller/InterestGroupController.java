@@ -22,21 +22,21 @@ public class InterestGroupController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/members/{memberId}/groups", method = GET)
+    @GetMapping("/members/{memberId}/groups")
     public ResponseEntity<LinkedHashSet<InterestGroupDto>> interestGroupList(@PathVariable String memberId) {
 
         return ResponseEntity.ok().body(interestGroupService.getInterestGroups(memberId));
     }
 
     @ResponseBody
-    @RequestMapping(value = "/members/{memberId}/groups", method = POST)
+    @PostMapping("/members/{memberId}/groups")
     public ResponseEntity<InterestGroupDto> interestGroupAdd(@PathVariable String memberId, @RequestBody InterestGroupDto interestGroupDto) {
 
         return new ResponseEntity<InterestGroupDto>(interestGroupService.addInterestGroup(interestGroupDto), HttpStatus.CREATED);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/members/{memberId}/groups/{groupId}", method = PUT)
+    @PutMapping("/members/{memberId}/groups/{groupId}")
     public ResponseEntity<String> interestGroupModify(@PathVariable String memberId, @PathVariable String groupId, @RequestBody InterestGroupUpdateDto updateDto) {
 
         return interestGroupService.updateInterestGroup(groupId, updateDto)
@@ -44,14 +44,14 @@ public class InterestGroupController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/members/{memberId}/groups/{groupId}", method = DELETE)
+    @DeleteMapping("/members/{memberId}/groups/{groupId}")
     public ResponseEntity<String> interestGroupRemove(@PathVariable String memberId, @PathVariable String groupId) {
 
         return interestGroupService.deleteInterestGroup(groupId) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @ResponseBody
-    @RequestMapping(value = "/members/{memberId}/groups/{groupId}", method = POST)
+    @PostMapping("/members/{memberId}/groups/{groupId}")
     public ResponseEntity<String> interestAddToGroup(@PathVariable String memberId, @PathVariable String groupId, @RequestBody StockItem stockItem) {
 
         return interestGroupService.addInterest(groupId, stockItem) ?
@@ -59,13 +59,13 @@ public class InterestGroupController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/members/{memberId}/groups/{groupId}/interest", method = PUT)
+    @PutMapping("/members/{memberId}/groups/{groupId}/interest")
     public ResponseEntity<InterestGroupDto> interestModifySequenceInGroup(@PathVariable String memberId, @PathVariable String groupId, @RequestBody List<StockItem> stockItems) {
-        return new ResponseEntity<InterestGroupDto>(interestGroupService.changeInterestsSequenceInGroup(groupId, stockItems ), HttpStatus.CREATED);
+        return new ResponseEntity<InterestGroupDto>(interestGroupService.changeInterestsSequenceInGroup(groupId, stockItems), HttpStatus.CREATED);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/members/{memberId}/groups/{groupId}/interest", method = DELETE)
+    @DeleteMapping(value = "/members/{memberId}/groups/{groupId}/interest")
     public ResponseEntity<String> interestRemove(@PathVariable String memberId, @PathVariable String groupId, @RequestBody StockItem stockItem) {
 
         return interestGroupService.popInterest(groupId, stockItem) ?

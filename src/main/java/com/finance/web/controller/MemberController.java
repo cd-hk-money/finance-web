@@ -16,19 +16,19 @@ public class MemberController {
     private final MemberService memberService;
 
     @ResponseBody
-    @RequestMapping(value = "/members/{memberId}/notification", method = GET)
+    @GetMapping("/members/{memberId}/notification")
     public ResponseEntity<Object> notificationItemList(@PathVariable String memberId) {
         return new ResponseEntity(memberService.getItemListFromNotifications(memberId), HttpStatus.OK);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/members/{memberId}/notification", method = POST)
+    @PostMapping("/members/{memberId}/notification")
     public ResponseEntity<Object> notificationItemAdd(@PathVariable String memberId, @RequestBody StockItem stockItem) {
         return new ResponseEntity(memberService.addItemToNotifications(memberId, stockItem), HttpStatus.CREATED);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/members/{memberId}/notification", method = DELETE)
+    @DeleteMapping("/members/{memberId}/notification")
     public ResponseEntity<Object> notificationItemRemove(@PathVariable String memberId, @RequestBody StockItem stockItem) {
         return new ResponseEntity(memberService.deleteItemInNotifications(memberId, stockItem), HttpStatus.NO_CONTENT);
     }
