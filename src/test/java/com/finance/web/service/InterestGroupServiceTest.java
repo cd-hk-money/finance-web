@@ -34,7 +34,7 @@ class InterestGroupServiceTest {
     @Test
     void findInterestGroupsByMemberId() throws Exception {
         //given
-        String memberId = member.getId().toString();
+        String memberId = member.get_id().toString();
 
         //when
         LinkedHashSet<InterestGroupDto> interestGroups =

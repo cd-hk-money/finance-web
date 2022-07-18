@@ -20,7 +20,6 @@ public class InterestGroupController {
 
     private final InterestGroupService interestGroupService;
 
-
     @ResponseBody
     @GetMapping("/members/{memberId}/groups")
     public ResponseEntity<LinkedHashSet<InterestGroupDto>> interestGroupList(@PathVariable String memberId) {
@@ -59,13 +58,13 @@ public class InterestGroupController {
     }
 
     @ResponseBody
-    @PutMapping("/members/{memberId}/groups/{groupId}/interest")
+    @PostMapping("/members/{memberId}/groups/{groupId}/interests")
     public ResponseEntity<InterestGroupDto> interestModifySequenceInGroup(@PathVariable String memberId, @PathVariable String groupId, @RequestBody List<StockItem> stockItems) {
         return new ResponseEntity<InterestGroupDto>(interestGroupService.changeInterestsSequenceInGroup(groupId, stockItems), HttpStatus.CREATED);
     }
 
     @ResponseBody
-    @DeleteMapping(value = "/members/{memberId}/groups/{groupId}/interest")
+    @DeleteMapping("/members/{memberId}/groups/{groupId}/interests")
     public ResponseEntity<String> interestRemove(@PathVariable String memberId, @PathVariable String groupId, @RequestBody StockItem stockItem) {
 
         return interestGroupService.popInterest(groupId, stockItem) ?

@@ -44,7 +44,7 @@ class MemberServiceTest {
     @Test
     void add() throws Exception {
         //given
-        String memberId = member.getId().toString();
+        String memberId = member.get_id().toString();
         StockItem stockItem = new StockItem("035720", "카카오");
 
         //when
@@ -57,7 +57,7 @@ class MemberServiceTest {
     @Test
     void get() throws Exception {
         //given
-        String memberId = member.getId().toString();
+        String memberId = member.get_id().toString();
         StockItem stockItem = new StockItem("035720", "카카오");
         StockItem stockItem2 = new StockItem("035420", "네이버");
         StockItem stockItem3 = new StockItem("005930", "삼성전자");
@@ -74,7 +74,7 @@ class MemberServiceTest {
     @Test
     void delete() throws Exception {
         //given
-        String memberId = member.getId().toString();
+        String memberId = member.get_id().toString();
         StockItem stockItem = new StockItem("035720", "카카오");
         memberService.addItemToNotifications(memberId, stockItem);
 

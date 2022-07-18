@@ -15,11 +15,11 @@ import static lombok.AccessLevel.*;
 @Document(collection = "members")
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-@ToString(of = {"id", "email", "username"})
+@ToString(of = {"_id", "email", "username"})
 public class Member {
 
     @Id
-    private ObjectId id;
+    private ObjectId _id;
 
     private String email;
 
