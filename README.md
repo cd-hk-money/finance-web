@@ -24,10 +24,9 @@
 6. Service instance로부터 받은 response result 전달
 ```
 
-## 시스템 구조
+## 시스템 구조도
 
-![image](https://user-images.githubusercontent.com/68547545/180674980-df11caa9-2c25-45ad-83c5-6fb1baf31fc1.png)
-
+![image](https://user-images.githubusercontent.com/68547545/180676735-4a1de05b-9af0-444d-8842-d3e97e122756.png)
 
 ## 클래스 다이어그램
 
