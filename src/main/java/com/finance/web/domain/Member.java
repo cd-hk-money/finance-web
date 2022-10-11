@@ -1,5 +1,6 @@
 package com.finance.web.domain;
 
+import com.finance.web.vo.Message;
 import com.finance.web.vo.StockItem;
 import lombok.*;
 import org.bson.types.ObjectId;
@@ -7,6 +8,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Stack;
 
 import static lombok.AccessLevel.*;
 
@@ -16,7 +19,7 @@ import static lombok.AccessLevel.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 @ToString(of = {"_id", "email", "username"})
-public class Member {
+public class Member implements MessageListener {
 
     @Id
     private ObjectId _id;
@@ -31,4 +34,10 @@ public class Member {
 
     private HashSet<StockItem> notifications;
 
+    private List<Message> messages;
+
+    @Override
+    public void pushMessage(Message message) {
+        messages.add(message);
+    }
 }
