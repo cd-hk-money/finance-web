@@ -19,4 +19,8 @@ public class Message {
     private StockItem stockItem;
     private Boolean isChecked;
 
+    public Boolean checkMessage() {
+        this.isChecked = Boolean.TRUE;
+        return Boolean.TRUE;
+    }
 }

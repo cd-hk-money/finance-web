@@ -19,25 +19,17 @@ import static lombok.AccessLevel.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 @ToString(of = {"_id", "email", "username"})
-public class Member implements MessageListener {
+public class Member {
 
     @Id
     private ObjectId _id;
 
     private String email;
-
     private String password;
-
     private String username;
-
     private Boolean subscription;
 
     private HashSet<StockItem> notifications;
-
     private List<Message> messages;
 
-    @Override
-    public void pushMessage(Message message) {
-        messages.add(message);
-    }
 }
