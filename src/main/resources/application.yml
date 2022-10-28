@@ -8,27 +8,10 @@ spring:
   application:
     name: web-service
 
-  h2:
-    console:
-      enabled: true # H2 ? ?? ??
-
-  datasource:
-    driver-class-name: org.h2.Driver #h2 ???? ??
-    url: jdbc:h2:tcp://localhost/~/finance-web # ?? URL
-    username: sa
-    password:
-
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        # dialect:
-        show_sql: true
-        format_sql: true
-    database: h2
-
   data:
+    mongodb:
+      uri: mongodb://admin:password@localhost:30000
+
     web:
       pageable:
         default-page-size: 10

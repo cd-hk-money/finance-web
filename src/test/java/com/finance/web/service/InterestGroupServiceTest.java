@@ -9,10 +9,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashSet;
 
 @SpringBootTest
+@Transactional
 class InterestGroupServiceTest {
 
     @Autowired
@@ -26,7 +28,7 @@ class InterestGroupServiceTest {
     @BeforeEach
     void init() {
         Query query = new Query(new Criteria().andOperator(
-                Criteria.where("email").is("test@1234.com")));
+                Criteria.where("email").is("wkdwoo@admin.com")));
 
         member = mongoTemplate.findOne(query, Member.class);
     }

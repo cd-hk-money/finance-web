@@ -7,11 +7,12 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 
 @SpringBootTest
-@Rollback(value = true)
+@Transactional
 class MemberTest {
 
     @Autowired
@@ -21,9 +22,9 @@ class MemberTest {
     void basic_test() throws Exception {
         //given
         Member member = Member.builder()
-                .email("wkdwoo@admin.com")
+                .email("test@admin.com")
                 .password("1234")
-                .username("장재영")
+                .username("홍길동")
                 .notifications(new HashSet<>())
                 .subscription(false)
                 .build();

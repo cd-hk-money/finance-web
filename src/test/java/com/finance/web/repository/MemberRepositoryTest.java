@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -58,7 +59,7 @@ class MemberRepositoryTest {
         Message message = Message.builder()
                 .createdDate(formatedNow)
                 .stockItem(new StockItem("005930", "삼성전자"))
-                .title("삼성전자 3만원 떡락 :(")
+                .title("삼성전자 6만원 안착 :)")
                 .content("영차 영차")
                 .build();
 
