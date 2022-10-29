@@ -18,9 +18,11 @@ import java.util.HashSet;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
+@Transactional
 class MemberRepositoryTest {
 
     @Autowired
@@ -29,19 +31,81 @@ class MemberRepositoryTest {
     @Autowired
     MongoTemplate mongoTemplate;
 
-    ObjectId memberId;
+    @Test
+    @DisplayName("멤버 생성 및 조회")
+    void createMemberAndFind() throws Exception {
+        //given
+        Member member = Member.builder()
+                .email("test@admin.com")
+                .password("1234")
+                .username("홍길동")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
 
-    @BeforeEach
-    void init() {
-        memberId = new ObjectId("62b1ad6c4511dc1e6b9afddf");
+        ObjectId memberId = memberRepository.save(member).get_id();
+        //when
+        Member findMember = memberRepository.findById(memberId).orElseThrow();
+        //then
+        assertThat(findMember.get_id()).isEqualTo(member.get_id());
+        assertThat(findMember.getEmail()).isEqualTo(member.getEmail());
+        assertThat(findMember.getPassword()).isEqualTo(member.getPassword());
     }
 
     @Test
-    @DisplayName("관심종목 가지고 있는 회원 조회")
-    void findMemberNotificationContainsTest() throws Exception {
-        StockItem stockItem = new StockItem("005930", "삼성전자");
-        List<Member> membersNotificationContains = memberRepository.findMembersFollwingStockItem(stockItem);
+    @DisplayName("멤버 삭제")
+    void deleteMember() throws Exception {
+        //given
+        Member member = Member.builder()
+                .email("test@admin.com")
+                .password("1234")
+                .username("홍길동")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
 
+        ObjectId memberId = memberRepository.save(member).get_id();
+        //when
+        memberRepository.deleteById(memberId);
+
+        //then
+        assertTrue(memberRepository.findById(memberId).isEmpty());
+    }
+
+
+    @Test
+    @DisplayName("알림설정 가지고 있는 회원 조회")
+    void findMemberNotificationContainsTest() throws Exception {
+
+        //given
+        Member member1 = Member.builder()
+                .email("test@admin.com")
+                .password("1234")
+                .username("홍길동")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        Member member2 = Member.builder()
+                .email("test2@admin.com")
+                .password("1234")
+                .username("임꺽정")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        ObjectId id1 = memberRepository.save(member1).get_id();
+        ObjectId id2 = memberRepository.save(member2).get_id();
+
+
+        //when
+        StockItem stockItem = new StockItem("005930", "삼성전자");
+        memberRepository.pushItemToNotifications(id1, stockItem);
+        memberRepository.pushItemToNotifications(id2, stockItem);
+
+
+        //then
+        List<Member> membersNotificationContains = memberRepository.findMembersFollwingStockItem(stockItem);
         assertThat(membersNotificationContains.size()).isNotZero();
 
         for (Member member : membersNotificationContains) {
@@ -77,9 +141,20 @@ class MemberRepositoryTest {
     }
 
     @Test
-    @DisplayName("관심종목 추가")
-    void add() throws Exception {
-        memberId = new ObjectId("62b1692848b07a611c0965fe");
+    @DisplayName("알림 설정 추가")
+    void addItemToNotifications() throws Exception {
+        Member member = Member.builder()
+                .email("test@admin.com")
+                .password("1234")
+                .username("홍길동")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        ObjectId memberId = memberRepository.save(member).get_id();
+
+        //when
+
         StockItem stockItem = new StockItem("005930", "삼성전자");
         boolean b = memberRepository.pushItemToNotifications(memberId, stockItem);
 
@@ -87,16 +162,42 @@ class MemberRepositoryTest {
     }
 
     @Test
-    @DisplayName("관심종목 조회")
-    void read() throws Exception {
+    @DisplayName("알림 설정 종목 조회")
+    void readItemFromNotifications() throws Exception {
+        Member member = Member.builder()
+                .email("test@admin.com")
+                .password("1234")
+                .username("홍길동")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        ObjectId memberId = memberRepository.save(member).get_id();
+
+        StockItem stockItem = new StockItem("005930", "삼성전자");
+        memberRepository.pushItemToNotifications(memberId, stockItem);
+
         HashSet<StockItem> notifications = memberRepository.findNotificationsByMemberId(memberId);
+        assertFalse(notifications.isEmpty());
         notifications.stream().map(notification -> "notification = " + notification).forEach(System.out::println);
     }
 
     @Test
-    @DisplayName("관심종목 삭제")
-    void delete() throws Exception {
+    @DisplayName("알림 설정 삭제")
+    void deleteItemFromNotifications() throws Exception {
+        Member member = Member.builder()
+                .email("test@admin.com")
+                .password("1234")
+                .username("홍길동")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        ObjectId memberId = memberRepository.save(member).get_id();
+
         StockItem stockItem = new StockItem("005930", "삼성전자");
+        memberRepository.pushItemToNotifications(memberId, stockItem);
+
         boolean b = memberRepository.deleteItemFromNotifications(memberId, stockItem);
 
         assertTrue(b);
