@@ -23,7 +23,7 @@ public interface InterestGroupService {
 
     boolean popInterest(String interestGroupId, StockItem stockItem);
 
-    InterestGroupDto changeInterestsSequenceInGroup(String interestGroupId, List<StockItem> interests);
+    InterestGroupDto updateInterestsInGroups(String interestGroupId, List<StockItem> interests);
 
     ObjectId toObjectId(String id);
 

@@ -54,7 +54,7 @@ public class InterestGroupServiceImpl implements InterestGroupService {
     }
 
     @Override
-    public InterestGroupDto changeInterestsSequenceInGroup(String interestGroupId, List<StockItem> interests) {
+    public InterestGroupDto updateInterestsInGroups(String interestGroupId, List<StockItem> interests) {
         return interestGroupRepository.updateInterests(toObjectId(interestGroupId), interests);
     }
 

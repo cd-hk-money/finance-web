@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
-
 @RestController
 @RequiredArgsConstructor
 public class InterestGroupController {
@@ -60,7 +58,7 @@ public class InterestGroupController {
     @ResponseBody
     @PostMapping("/members/{memberId}/groups/{groupId}/interests")
     public ResponseEntity<InterestGroupDto> interestModifySequenceInGroup(@PathVariable String memberId, @PathVariable String groupId, @RequestBody List<StockItem> stockItems) {
-        return new ResponseEntity<InterestGroupDto>(interestGroupService.changeInterestsSequenceInGroup(groupId, stockItems), HttpStatus.CREATED);
+        return new ResponseEntity<InterestGroupDto>(interestGroupService.updateInterestsInGroups(groupId, stockItems), HttpStatus.CREATED);
     }
 
     @ResponseBody
