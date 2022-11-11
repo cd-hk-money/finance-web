@@ -4,9 +4,11 @@ import com.finance.web.domain.Member;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 
+@Transactional
 public interface MemberRepository extends MongoRepository<Member, ObjectId>, CustomMemberRepository {
 
     boolean existsMemberByEmailEquals(String email);
