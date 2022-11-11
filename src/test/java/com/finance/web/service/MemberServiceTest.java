@@ -1,6 +1,8 @@
 package com.finance.web.service;
 
 import com.finance.web.domain.Member;
+import com.finance.web.dto.MemberDto;
+import com.finance.web.dto.SignUpRequestDto;
 import com.finance.web.vo.StockItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -97,6 +99,29 @@ class MemberServiceTest {
         //then
         assertThat(expectFalse).isFalse();
         assertThat(expectTrue).isTrue();
+    }
+
+
+    @Test
+    @DisplayName("회원가입")
+    void signUp() throws Exception {
+        //given
+        SignUpRequestDto requestDto = SignUpRequestDto.builder()
+                .email("wkdwoos@gmail.com")
+                .password("1234")
+                .username("장휴일")
+                .nickname("마이클조던")
+                .subscription(false)
+                .build();
+
+        //when
+        MemberDto memberDto = memberService.signUpMember(requestDto);
+
+        //then
+        assertThat(memberDto.getUsername()).isEqualTo(requestDto.getUsername());
+        assertThat(memberDto.getEmail()).isEqualTo(requestDto.getEmail());
+        assertThat(memberDto.getNickname()).isEqualTo(requestDto.getNickname());
+        assertThat(memberDto.getSubscription()).isEqualTo(requestDto.getSubscription());
     }
 
 
