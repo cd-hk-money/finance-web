@@ -18,7 +18,7 @@ public interface CustomMemberRepository {
 
     HashSet<StockItem> findItemInNotifications(ObjectId memberId);
 
-    List<Member> findMembersFollwingStockItem(StockItem stockItem);
+    List<Member> findMembersFollowingStockItem(StockItem stockItem);
 
     HashSet<StockItem> findNotificationsByMemberId(ObjectId memberId);
 }

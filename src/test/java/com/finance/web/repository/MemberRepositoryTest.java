@@ -4,7 +4,6 @@ import com.finance.web.domain.Member;
 import com.finance.web.vo.Message;
 import com.finance.web.vo.StockItem;
 import org.bson.types.ObjectId;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,18 +38,110 @@ class MemberRepositoryTest {
                 .email("test@admin.com")
                 .password("1234")
                 .username("홍길동")
+                .nickname("임꺽정")
                 .notifications(new HashSet<>())
                 .subscription(false)
                 .build();
 
         ObjectId memberId = memberRepository.save(member).get_id();
+
         //when
         Member findMember = memberRepository.findById(memberId).orElseThrow();
+
         //then
         assertThat(findMember.get_id()).isEqualTo(member.get_id());
         assertThat(findMember.getEmail()).isEqualTo(member.getEmail());
         assertThat(findMember.getPassword()).isEqualTo(member.getPassword());
     }
+
+    
+    @Test
+    @DisplayName("이메일 중복검사")
+    void existsMemberByEmailEquals() throws Exception {
+        //given
+        Member member1 = Member.builder()
+                .email("test@admin.com")
+                .password("1234")
+                .username("홍길동")
+                .nickname("임꺽정")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        ObjectId memberId = memberRepository.save(member1).get_id();
+
+        Member member2 = Member.builder()
+                .email("test@admin.com")
+                .password("1234")
+                .username("장발장")
+                .nickname("장발산")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        Member member3 = Member.builder()
+                .email("test2@admin.com")
+                .password("1234")
+                .username("장발단")
+                .nickname("장발산")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        //when
+        boolean b = memberRepository.existsMemberByEmailEquals(member2.getEmail());
+        boolean b2 = memberRepository.existsMemberByEmailEquals(member3.getEmail());
+
+        //then
+        assertTrue(b);
+        assertFalse(b2);
+    
+    }
+    
+    @Test
+    @DisplayName("username 중복검사")
+    void existsMemberByUsernameEquals() throws Exception {
+        //given
+        Member member1 = Member.builder()
+                .email("test@admin.com")
+                .password("1234")
+                .username("홍길동")
+                .nickname("임꺽정")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        ObjectId memberId = memberRepository.save(member1).get_id();
+
+        Member member2 = Member.builder()
+                .email("test@admin.com")
+                .password("1234")
+                .username("홍길동")
+                .nickname("장발산")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        Member member3 = Member.builder()
+                .email("test2@admin.com")
+                .password("1234")
+                .username("장발장")
+                .nickname("장발산")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        //when
+        boolean b = memberRepository.existsMemberByUsernameEquals(member2.getUsername());
+        boolean b2 = memberRepository.existsMemberByUsernameEquals(member3.getUsername());
+
+        //then
+        assertTrue(b);
+        assertFalse(b2);
+    }
+
+
+
 
     @Test
     @DisplayName("멤버 삭제")
@@ -82,6 +173,7 @@ class MemberRepositoryTest {
                 .email("test@admin.com")
                 .password("1234")
                 .username("홍길동")
+                .nickname("임꺽정")
                 .notifications(new HashSet<>())
                 .subscription(false)
                 .build();
@@ -97,15 +189,13 @@ class MemberRepositoryTest {
         ObjectId id1 = memberRepository.save(member1).get_id();
         ObjectId id2 = memberRepository.save(member2).get_id();
 
-
         //when
         StockItem stockItem = new StockItem("005930", "삼성전자");
         memberRepository.pushItemToNotifications(id1, stockItem);
         memberRepository.pushItemToNotifications(id2, stockItem);
 
-
         //then
-        List<Member> membersNotificationContains = memberRepository.findMembersFollwingStockItem(stockItem);
+        List<Member> membersNotificationContains = memberRepository.findMembersFollowingStockItem(stockItem);
         assertThat(membersNotificationContains.size()).isNotZero();
 
         for (Member member : membersNotificationContains) {
@@ -133,7 +223,7 @@ class MemberRepositoryTest {
 
         //then
         assertTrue(b);
-        List<Member> membersFollwingStockItem = memberRepository.findMembersFollwingStockItem(stockItem);
+        List<Member> membersFollwingStockItem = memberRepository.findMembersFollowingStockItem(stockItem);
         for (Member member : membersFollwingStockItem) {
             assertTrue(member.getNotifications().contains(stockItem));
             assertTrue(member.getMessages().contains(message));
@@ -147,6 +237,7 @@ class MemberRepositoryTest {
                 .email("test@admin.com")
                 .password("1234")
                 .username("홍길동")
+                .nickname("임꺽정")
                 .notifications(new HashSet<>())
                 .subscription(false)
                 .build();
@@ -168,6 +259,7 @@ class MemberRepositoryTest {
                 .email("test@admin.com")
                 .password("1234")
                 .username("홍길동")
+                .nickname("임꺽정")
                 .notifications(new HashSet<>())
                 .subscription(false)
                 .build();
@@ -189,6 +281,7 @@ class MemberRepositoryTest {
                 .email("test@admin.com")
                 .password("1234")
                 .username("홍길동")
+                .nickname("임꺽정")
                 .notifications(new HashSet<>())
                 .subscription(false)
                 .build();

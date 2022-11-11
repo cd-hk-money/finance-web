@@ -1,5 +1,6 @@
 package com.finance.web.domain;
 
+import com.finance.web.dto.MemberDto;
 import com.finance.web.vo.Message;
 import com.finance.web.vo.StockItem;
 import lombok.*;
@@ -9,9 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Stack;
 
-import static lombok.AccessLevel.*;
+import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Builder
@@ -27,9 +27,22 @@ public class Member {
     private String email;
     private String password;
     private String username;
+    private String nickname;
     private Boolean subscription;
 
     private HashSet<StockItem> notifications;
     private List<Message> messages;
+
+
+    public MemberDto toDto() {
+        return MemberDto.builder()
+                .email(email)
+                .username(username)
+                .nickname(nickname)
+                .subscription(subscription)
+                .notifications(notifications)
+                .messages(messages)
+                .build();
+    }
 
 }

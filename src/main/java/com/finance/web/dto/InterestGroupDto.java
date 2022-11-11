@@ -1,13 +1,16 @@
 package com.finance.web.dto;
 
-import com.finance.web.vo.StockItem;
 import com.finance.web.domain.InterestGroup;
-import lombok.*;
+import com.finance.web.vo.StockItem;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 
 import java.util.List;
 
-import static lombok.AccessLevel.*;
+import static lombok.AccessLevel.PROTECTED;
 
 @Data
 @Builder

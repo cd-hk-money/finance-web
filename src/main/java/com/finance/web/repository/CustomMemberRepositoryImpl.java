@@ -19,7 +19,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
     private final MongoTemplate mongoTemplate;
 
 
-    public List<Member> findMembersFollwingStockItem(StockItem stockItem) {
+    public List<Member> findMembersFollowingStockItem(StockItem stockItem) {
         Criteria criteria = new Criteria().andOperator(
                 Criteria.where("_class").is("com.finance.web.entity.Member"),
                 Criteria.where("notifications.stockCode").is(stockItem.getStockCode()),
