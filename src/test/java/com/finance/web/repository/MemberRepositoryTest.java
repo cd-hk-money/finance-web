@@ -95,7 +95,6 @@ class MemberRepositoryTest {
         //then
         assertTrue(b);
         assertFalse(b2);
-    
     }
     
     @Test

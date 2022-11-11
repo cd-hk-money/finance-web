@@ -9,7 +9,11 @@ import java.util.HashSet;
 
 public interface MemberService {
 
-    MemberDto createMember(SignUpRequestDto requestDto);
+    MemberDto signUpMember(SignUpRequestDto requestDto);
+
+    public boolean isAvailableEmail(String email);
+
+    public boolean isAvailableUsername(String username);
 
     boolean addItemToNotifications(String memberId, StockItem stockItem);
 

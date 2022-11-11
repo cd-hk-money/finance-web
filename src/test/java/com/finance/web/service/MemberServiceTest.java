@@ -2,7 +2,9 @@ package com.finance.web.service;
 
 import com.finance.web.domain.Member;
 import com.finance.web.vo.StockItem;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -11,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
@@ -38,13 +40,69 @@ class MemberServiceTest {
         mongoTemplate.save(member);
     }
 
-    @AfterEach
-    void afterEach() {
-        mongoTemplate.remove(member);
+    @Test
+    @DisplayName("이메일 중복검사")
+    void isAvailableEmail() throws Exception {
+        //given
+        Member member1 = Member.builder()
+                .email("wkdwoo@kakao.com")
+                .password("1234")
+                .username("장길동")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        Member member2 = Member.builder()
+                .email("wkdwoos@gmail.com")
+                .password("1234")
+                .username("홍길동")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        //when
+        boolean expectFalse = memberService.isAvailableEmail(member1.getEmail());
+        boolean expectTrue = memberService.isAvailableEmail(member2.getEmail());
+
+        //then
+        assertThat(expectFalse).isFalse();
+        assertThat(expectTrue).isTrue();
     }
 
+
     @Test
-    void add() throws Exception {
+    @DisplayName("username 중복검사")
+    void isAvailableUsername() throws Exception {
+        //given
+        Member member1 = Member.builder()
+                .email("wkdwoos@gmail.com")
+                .password("1234")
+                .username("장재영")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        Member member2 = Member.builder()
+                .email("wkdwoo@naver.com")
+                .password("1234")
+                .username("홍길동22222")
+                .notifications(new HashSet<>())
+                .subscription(false)
+                .build();
+
+        //when
+        boolean expectFalse = memberService.isAvailableUsername(member1.getUsername());
+        boolean expectTrue = memberService.isAvailableUsername(member2.getUsername());
+
+        //then
+        assertThat(expectFalse).isFalse();
+        assertThat(expectTrue).isTrue();
+    }
+
+
+    @Test
+    @DisplayName("알림설정 아이템 추가")
+    void addStockItem() throws Exception {
         //given
         String memberId = member.get_id().toString();
         StockItem stockItem = new StockItem("035720", "카카오");
@@ -57,7 +115,8 @@ class MemberServiceTest {
     }
 
     @Test
-    void get() throws Exception {
+    @DisplayName("알림설정 아이템 조회")
+    void getNotificationList() throws Exception {
         //given
         String memberId = member.get_id().toString();
         StockItem stockItem = new StockItem("035720", "카카오");
@@ -74,7 +133,8 @@ class MemberServiceTest {
     }
 
     @Test
-    void delete() throws Exception {
+    @DisplayName("알림설정 아이템 삭제")
+    void deleteItemInNotifications() throws Exception {
         //given
         String memberId = member.get_id().toString();
         StockItem stockItem = new StockItem("035720", "카카오");

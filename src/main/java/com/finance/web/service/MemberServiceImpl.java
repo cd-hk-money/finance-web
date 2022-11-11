@@ -20,27 +20,36 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public MemberDto createMember(SignUpRequestDto requestDto) {
-        return memberRepository.save(requestDto.toDocument()).toDto();
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public MemberDto signUpMember(SignUpRequestDto requestDto) {
+        if (isAvailableEmail(requestDto.getEmail()) && isAvailableUsername(requestDto.getUsername())) {
+            return memberRepository.save(requestDto.toDocument()).toDto();
+        }
+
+        throw new IllegalArgumentException("회원 등록에 실패했어요 :(");
     }
 
-//    public Boolean deleteMember()
+    @Override
+    public boolean isAvailableEmail(String email) {
+        return !memberRepository.existsMemberByEmailEquals(email);
+    }
 
     @Override
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    public boolean isAvailableUsername(String username) {
+        return !memberRepository.existsMemberByUsernameEquals(username);
+    }
+
+    @Override
     public boolean addItemToNotifications(String memberId, StockItem stockItem) {
         return memberRepository.pushItemToNotifications(toObjectId(memberId), stockItem);
     }
 
     @Override
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public HashSet<StockItem> getItemListFromNotifications(String memberId) {
         return memberRepository.findNotificationsByMemberId(toObjectId(memberId));
     }
 
     @Override
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public boolean deleteItemInNotifications(String memberId, StockItem stockItem) {
         return memberRepository.deleteItemFromNotifications(toObjectId(memberId), stockItem);
     }
