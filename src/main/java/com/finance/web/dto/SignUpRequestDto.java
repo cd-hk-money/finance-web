@@ -31,6 +31,7 @@ public class SignUpRequestDto {
                 .username(username)
                 .nickname(nickname)
                 .password(password)
+                .role("USER")
                 .messages(new ArrayList<Message>())
                 .notifications(new HashSet<StockItem>())
                 .subscription(false)
