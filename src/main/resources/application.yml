@@ -29,3 +29,10 @@ eureka:
     fetch-registry: true
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+
+token:
+  access-expired-time: 3600000
+  refresh-expired-time: 604800000
+  secret: donda  # 토큰 탈취를 막기 위해선 원래 숨겨야 한다.
+  refresh-token-name: refresh-token
+  access-token-name: access-token
