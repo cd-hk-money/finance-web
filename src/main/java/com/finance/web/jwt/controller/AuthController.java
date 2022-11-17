@@ -6,9 +6,10 @@ import com.finance.web.jwt.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.finance.web.dto.MemberResponseDto.*;
+import static com.finance.web.dto.MemberResponseDto.TokenInfo;
 
 @RestController
 @RequestMapping("/auth")
@@ -36,10 +37,13 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenInfo> login(@RequestBody MemberRequestDto.Login request) {
-        System.out.println("request = " + request);
         TokenInfo login = authService.login(request);
         return new ResponseEntity<TokenInfo>(login, HttpStatus.CREATED);
     }
 
+    @PostMapping("/reissue")
+    public ResponseEntity<TokenInfo> reissue(@RequestBody MemberRequestDto.Reissue reissue) {
+        return new ResponseEntity<TokenInfo>(authService.reissue(reissue), HttpStatus.CREATED);
+    }
 
 }

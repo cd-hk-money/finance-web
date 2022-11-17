@@ -4,9 +4,7 @@ package com.finance.web.dto;
 import com.finance.web.domain.Member;
 import com.finance.web.vo.Message;
 import com.finance.web.vo.StockItem;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import javax.validation.constraints.NotEmpty;
@@ -36,19 +34,6 @@ public class MemberRequestDto {
         @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$", message = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
         private String password;
 
-
-        public Member toDocument() {
-            return Member.builder()
-                    .email(email)
-                    .username(username)
-                    .nickname(nickname)
-                    .password(password)
-                    .role("USER")
-                    .messages(new ArrayList<Message>())
-                    .notifications(new HashSet<StockItem>())
-                    .subscription(false)
-                    .build();
-        }
     }
 
     @Getter

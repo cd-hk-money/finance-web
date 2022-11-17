@@ -7,6 +7,7 @@ import com.finance.web.dto.MemberResponseDto;
 import com.finance.web.exception.NotExistUserException;
 import com.finance.web.jwt.utils.JwtTokenProvider;
 import com.finance.web.repository.MemberRepository;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -68,6 +69,24 @@ public class AuthServiceImpl implements AuthService {
         return tokenInfo;
     }
 
+    @Override
+    public MemberResponseDto.TokenInfo reissue(MemberRequestDto.Reissue reissue) {
+        if (!jwtTokenProvider.validateToken(reissue.getRefreshToken())) {
+            throw new JwtException("Refresh Token 정보가 유효하지 않습니다");
+        }
+
+        Authentication authentication = jwtTokenProvider.getAuthentication(reissue.getAccessToken());
+
+        String refreshToken = (String) redisTemplate.opsForValue().get("RT:" + authentication.getName());
+
+        if (!refreshToken.equals(reissue.getRefreshToken())) {
+            throw new JwtException("Refresh Token 정보가 일치하지 않습니다");
+        }
+        MemberResponseDto.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+        redisTemplate.opsForValue().set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
+
+        return tokenInfo;
+    }
 
     public Member findMemberByToken() {
         return Member.builder().build();
