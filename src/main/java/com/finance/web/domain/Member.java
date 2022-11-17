@@ -32,7 +32,7 @@ public class Member {
 
     private HashSet<StockItem> notifications;
     private List<Message> messages;
-
+    private String role;
 
     public MemberDto toDto() {
         return MemberDto.builder()

@@ -7,9 +7,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 @Transactional
 public interface MemberRepository extends MongoRepository<Member, ObjectId>, CustomMemberRepository {
+
+    Optional<Member> findMemberByUsername(String username);
 
     boolean existsMemberByEmailEquals(String email);
 

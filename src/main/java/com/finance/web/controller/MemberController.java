@@ -1,7 +1,5 @@
 package com.finance.web.controller;
 
-import com.finance.web.dto.MemberDto;
-import com.finance.web.dto.SignUpRequestDto;
 import com.finance.web.service.MemberService;
 import com.finance.web.vo.StockItem;
 import lombok.RequiredArgsConstructor;
@@ -14,22 +12,6 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
-
-
-    @PostMapping("/members/signUp")
-    public ResponseEntity<MemberDto> signUp(@RequestBody SignUpRequestDto requestDto) {
-        return new ResponseEntity<MemberDto>(memberService.signUpMember(requestDto), HttpStatus.CREATED);
-    }
-
-    @GetMapping("/members/email/{email}")
-    public ResponseEntity checkAvailableEmail(@PathVariable("email") String email) {
-        return memberService.isAvailableEmail(email) ? new ResponseEntity(HttpStatus.NO_CONTENT) : new ResponseEntity(HttpStatus.CONFLICT);
-    }
-
-    @GetMapping("/members/username/{username}")
-    public ResponseEntity checkAvailableUsername(@PathVariable("username") String username) {
-        return memberService.isAvailableUsername(username) ? new ResponseEntity(HttpStatus.NO_CONTENT) : new ResponseEntity(HttpStatus.CONFLICT);
-    }
 
     @GetMapping("/members/{memberId}/notifications")
     public ResponseEntity<Object> notificationItemList(@PathVariable String memberId) {
