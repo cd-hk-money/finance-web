@@ -1,15 +1,17 @@
 package com.finance.web.jwt.service;
 
 import com.finance.web.domain.Member;
-import com.finance.web.dto.MemberDto;
 import com.finance.web.dto.MemberRequestDto;
 import com.finance.web.dto.MemberResponseDto;
+import com.finance.web.dto.Response;
 import com.finance.web.exception.NotExistUserException;
 import com.finance.web.jwt.utils.JwtTokenProvider;
 import com.finance.web.repository.MemberRepository;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -29,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class AuthServiceImpl implements AuthService {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final Response response;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate redisTemplate;
@@ -36,29 +39,36 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public MemberDto signUpMember(MemberRequestDto.SignUp request) {
-        if (isAvailableEmail(request.getEmail()) && isAvailableUsername(request.getUsername())) {
-            Member member = Member.builder()
-                    .email(request.getEmail())
-                    .username(request.getUsername())
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .role("USER")
-                    .nickname(request.getNickname())
-                    .subscription(false)
-                    .messages(new ArrayList<>())
-                    .notifications(new HashSet<>())
-                    .build();
-
-            return memberRepository.save(member).toDto();
+    public ResponseEntity<?> signUpMember(MemberRequestDto.SignUp request) {
+        if (existsEmail(request.getEmail())) {
+            return response.fail("This email is already in use", HttpStatus.CONFLICT);
+        }
+        if (existsEmail(request.getUsername())) {
+            return response.fail("This username is already in use", HttpStatus.CONFLICT);
         }
 
-        throw new IllegalArgumentException("회원 등록에 실패했어요 :(");
+        Member member = Member.builder()
+                .email(request.getEmail())
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role("USER")
+                .nickname(request.getNickname())
+                .subscription(false)
+                .messages(new ArrayList<>())
+                .notifications(new HashSet<>())
+                .build();
+
+        return response.success(memberRepository.save(member).toDto(), "Sign up completed", HttpStatus.CREATED);
     }
 
+
     @Override
-    public MemberResponseDto.TokenInfo login(MemberRequestDto.Login login) {
+    public ResponseEntity<?> login(MemberRequestDto.Login login) {
+        if (!existsUsername(login.getUsername())) {
+            response.fail("Member who does not exist.", HttpStatus.NOT_FOUND);
+        }
         Member member = memberRepository.findMemberByUsername(login.getUsername()).orElseThrow(()
-                -> new NotExistUserException("존재하지 않는 회원이에요!"));
+                -> new NotExistUserException("Member who does not exist."));
 
         UsernamePasswordAuthenticationToken authenticationToken = login.toAuthentication();
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
@@ -67,35 +77,34 @@ public class AuthServiceImpl implements AuthService {
         redisTemplate.opsForValue()
                 .set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
 
-        return tokenInfo;
+        return response.success(tokenInfo, "Login successfully", HttpStatus.CREATED);
     }
 
     @Override
-    public MemberResponseDto.TokenInfo reissue(MemberRequestDto.Reissue reissue) {
+    public ResponseEntity<?> reissue(MemberRequestDto.Reissue reissue) {
         if (!jwtTokenProvider.validateToken(reissue.getRefreshToken())) {
-            throw new JwtException("Refresh Token 정보가 유효하지 않습니다");
+            return response.fail("Refresh Token is invalid", HttpStatus.BAD_REQUEST);
         }
 
         Authentication authentication = jwtTokenProvider.getAuthentication(reissue.getAccessToken());
-
         String refreshToken = (String) redisTemplate.opsForValue().get("RT:" + authentication.getName());
 
         if (ObjectUtils.isEmpty(refreshToken)) {
-            throw new JwtException("잘못된 요청입니다.");
+            return response.fail("Refresh Token is empty", HttpStatus.BAD_REQUEST);
         }
 
         if (!refreshToken.equals(reissue.getRefreshToken())) {
-            throw new JwtException("Refresh Token 정보가 일치하지 않습니다");
+            return response.fail("Refresh Token is invalid", HttpStatus.BAD_REQUEST);
         }
         MemberResponseDto.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
         redisTemplate.opsForValue().set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
 
-        return tokenInfo;
+        return response.success(tokenInfo, "Refresh token is reissued", HttpStatus.CREATED);
     }
 
-    public void logout(MemberRequestDto.Logout logout) {
+    public ResponseEntity<?> logout(MemberRequestDto.Logout logout) {
         if (!jwtTokenProvider.validateToken(logout.getAccessToken())) {
-            return;
+            return response.fail("Refresh Token is invalid", HttpStatus.BAD_REQUEST);
         }
 
         Authentication authentication = jwtTokenProvider.getAuthentication(logout.getAccessToken());
@@ -106,6 +115,7 @@ public class AuthServiceImpl implements AuthService {
 
         Long expiration = jwtTokenProvider.getExpiration(logout.getAccessToken());
         redisTemplate.opsForValue().set(logout.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+        return response.success("logout successfully", HttpStatus.NO_CONTENT);
     }
 
     public Member findMemberByToken() {
@@ -113,13 +123,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean isAvailableEmail(String email) {
-        return !memberRepository.existsMemberByEmailEquals(email);
+    public boolean existsEmail(String email) {
+        return memberRepository.existsMemberByEmailEquals(email);
     }
 
     @Override
-    public boolean isAvailableUsername(String username) {
-        return !memberRepository.existsMemberByUsernameEquals(username);
+    public boolean existsUsername(String username) {
+        return memberRepository.existsMemberByUsernameEquals(username);
     }
 
 

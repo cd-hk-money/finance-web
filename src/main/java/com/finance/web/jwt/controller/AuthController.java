@@ -1,14 +1,12 @@
 package com.finance.web.jwt.controller;
 
-import com.finance.web.dto.MemberDto;
 import com.finance.web.dto.MemberRequestDto;
+import com.finance.web.dto.Response;
 import com.finance.web.jwt.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import static com.finance.web.dto.MemberResponseDto.TokenInfo;
 
 @RestController
 @RequestMapping("/auth")
@@ -16,39 +14,38 @@ import static com.finance.web.dto.MemberResponseDto.TokenInfo;
 public class AuthController {
 
     private final AuthService authService;
-
+    private final Response response;
 
     @GetMapping("/email/{email}")
-    public ResponseEntity checkAvailableEmail(@PathVariable("email") String email) {
-        return authService.isAvailableEmail(email) ? new ResponseEntity(HttpStatus.NO_CONTENT) : new ResponseEntity(HttpStatus.CONFLICT);
+    public ResponseEntity<?> checkAvailableEmail(@PathVariable String email) {
+        return authService.existsEmail(email) ? response.fail("This email is already in use", email, HttpStatus.CONFLICT) :
+                response.success("This email is available", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/username/{username}")
-    public ResponseEntity checkAvailableUsername(@PathVariable("username") String username) {
-        return authService.isAvailableUsername(username) ? new ResponseEntity(HttpStatus.NO_CONTENT) : new ResponseEntity(HttpStatus.CONFLICT);
+    public ResponseEntity<?> checkAvailableUsername(@PathVariable String username) {
+        return authService.existsUsername(username) ? response.fail("This username is already in use", username, HttpStatus.CONFLICT) :
+                response.success("This username is available", HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/signUp")
-    public ResponseEntity<MemberDto> signUp(@RequestBody MemberRequestDto.SignUp request) {
-        MemberDto memberDto = authService.signUpMember(request);
-        return new ResponseEntity<MemberDto>(memberDto, HttpStatus.CREATED);
+    public ResponseEntity<?> signUp(@RequestBody MemberRequestDto.SignUp request) {
+        return authService.signUpMember(request);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenInfo> login(@RequestBody MemberRequestDto.Login request) {
-        TokenInfo login = authService.login(request);
-        return new ResponseEntity<TokenInfo>(login, HttpStatus.CREATED);
+    public ResponseEntity<?> login(@RequestBody MemberRequestDto.Login request) {
+        return authService.login(request);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestBody MemberRequestDto.Logout logout) {
-        authService.logout(logout);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<?> logout(@RequestBody MemberRequestDto.Logout request) {
+        return authService.logout(request);
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<TokenInfo> reissue(@RequestBody MemberRequestDto.Reissue reissue) {
-        return new ResponseEntity<TokenInfo>(authService.reissue(reissue), HttpStatus.CREATED);
+    public ResponseEntity<?> reissue(@RequestBody MemberRequestDto.Reissue request) {
+        return authService.reissue(request);
     }
 
 }

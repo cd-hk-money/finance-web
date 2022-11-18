@@ -3,20 +3,21 @@ package com.finance.web.jwt.service;
 import com.finance.web.dto.MemberDto;
 import com.finance.web.dto.MemberRequestDto;
 import com.finance.web.dto.MemberResponseDto;
+import org.springframework.http.ResponseEntity;
 
 public interface AuthService {
 
-    MemberDto signUpMember(MemberRequestDto.SignUp request);
+    ResponseEntity<?> signUpMember(MemberRequestDto.SignUp request);
 
-    MemberResponseDto.TokenInfo login(MemberRequestDto.Login login);
+    ResponseEntity<?> login(MemberRequestDto.Login login);
 
-    void logout(MemberRequestDto.Logout logout);
+    ResponseEntity<?> logout(MemberRequestDto.Logout logout);
 
-    MemberResponseDto.TokenInfo reissue(MemberRequestDto.Reissue reissue);
+    ResponseEntity<?> reissue(MemberRequestDto.Reissue reissue);
 
-    boolean isAvailableEmail(String email);
+    boolean existsEmail(String email);
 
-    boolean isAvailableUsername(String username);
+    boolean existsUsername(String username);
 
 
 }
