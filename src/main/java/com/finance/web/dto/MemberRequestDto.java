@@ -1,16 +1,13 @@
 package com.finance.web.dto;
 
 
-import com.finance.web.domain.Member;
-import com.finance.web.vo.Message;
-import com.finance.web.vo.StockItem;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import java.util.ArrayList;
-import java.util.HashSet;
 
 public class MemberRequestDto {
 
@@ -61,6 +58,7 @@ public class MemberRequestDto {
 
     @Getter
     @Setter
+    @ToString
     public static class Logout {
         @NotEmpty(message = "잘못된 요청입니다.")
         private String accessToken;

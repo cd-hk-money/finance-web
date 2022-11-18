@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -79,6 +80,10 @@ public class AuthServiceImpl implements AuthService {
 
         String refreshToken = (String) redisTemplate.opsForValue().get("RT:" + authentication.getName());
 
+        if (ObjectUtils.isEmpty(refreshToken)) {
+            throw new JwtException("잘못된 요청입니다.");
+        }
+
         if (!refreshToken.equals(reissue.getRefreshToken())) {
             throw new JwtException("Refresh Token 정보가 일치하지 않습니다");
         }
@@ -86,6 +91,21 @@ public class AuthServiceImpl implements AuthService {
         redisTemplate.opsForValue().set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
 
         return tokenInfo;
+    }
+
+    public void logout(MemberRequestDto.Logout logout) {
+        if (!jwtTokenProvider.validateToken(logout.getAccessToken())) {
+            return;
+        }
+
+        Authentication authentication = jwtTokenProvider.getAuthentication(logout.getAccessToken());
+
+        if (redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
+            redisTemplate.delete("RT:" + authentication.getName());
+        }
+
+        Long expiration = jwtTokenProvider.getExpiration(logout.getAccessToken());
+        redisTemplate.opsForValue().set(logout.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
     }
 
     public Member findMemberByToken() {

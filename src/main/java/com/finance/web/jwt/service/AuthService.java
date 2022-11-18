@@ -10,6 +10,8 @@ public interface AuthService {
 
     MemberResponseDto.TokenInfo login(MemberRequestDto.Login login);
 
+    void logout(MemberRequestDto.Logout logout);
+
     MemberResponseDto.TokenInfo reissue(MemberRequestDto.Reissue reissue);
 
     boolean isAvailableEmail(String email);
