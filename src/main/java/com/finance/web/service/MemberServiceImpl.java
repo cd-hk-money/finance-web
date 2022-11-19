@@ -36,7 +36,6 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
         return new User(users.getUsername(), users.getPassword(), users.getAuthorities());
     }
 
-
     @Override
     public boolean addItemToNotifications(String memberId, StockItem stockItem) {
         return memberRepository.pushItemToNotifications(toObjectId(memberId), stockItem);

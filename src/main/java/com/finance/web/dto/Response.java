@@ -11,7 +11,6 @@ import java.util.Collections;
 @Component
 public class Response {
 
-
     @Getter
     @Builder
     private static class Body {
@@ -42,6 +41,11 @@ public class Response {
     public ResponseEntity<?> success(Object data) {
         return success(data, null, HttpStatus.OK);
     }
+
+    public ResponseEntity<?> success(Object data, HttpStatus status) {
+        return success(data, null, status);
+    }
+
 
     public ResponseEntity<?> success() {
         return success(Collections.emptyList(), null, HttpStatus.OK);

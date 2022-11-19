@@ -1,5 +1,6 @@
 package com.finance.web.controller;
 
+import com.finance.web.dto.Response;
 import com.finance.web.service.MemberService;
 import com.finance.web.vo.StockItem;
 import lombok.RequiredArgsConstructor;
@@ -12,20 +13,24 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final Response response;
 
     @GetMapping("/members/{memberId}/notifications")
-    public ResponseEntity<Object> notificationItemList(@PathVariable String memberId) {
-        return new ResponseEntity(memberService.getItemListFromNotifications(memberId), HttpStatus.OK);
+    public ResponseEntity<? extends Object> notificationItemList(@PathVariable String memberId) {
+
+        return response.success(memberService.getItemListFromNotifications(memberId));
     }
 
     @PostMapping("/members/{memberId}/notifications")
-    public ResponseEntity<Object> notificationItemAdd(@PathVariable String memberId, @RequestBody StockItem stockItem) {
-        return new ResponseEntity(memberService.addItemToNotifications(memberId, stockItem), HttpStatus.CREATED);
+    public ResponseEntity<? extends Object> notificationItemAdd(@PathVariable String memberId, @RequestBody StockItem stockItem) {
+        return memberService.addItemToNotifications(memberId, stockItem) ? response.success(stockItem.getStockCode() + " is pushed", HttpStatus.CREATED) :
+                response.fail(stockItem.getStockCode() + " is not pushed", HttpStatus.NOT_MODIFIED);
     }
 
     @DeleteMapping("/members/{memberId}/notifications")
-    public ResponseEntity<Object> notificationItemRemove(@PathVariable String memberId, @RequestBody StockItem stockItem) {
-        return new ResponseEntity(memberService.deleteItemInNotifications(memberId, stockItem), HttpStatus.NO_CONTENT);
+    public ResponseEntity<? extends Object> notificationItemRemove(@PathVariable String memberId, @RequestBody StockItem stockItem) {
+        return memberService.deleteItemInNotifications(memberId, stockItem) ? response.success(HttpStatus.NO_CONTENT) :
+                response.fail("item isn't deleted", HttpStatus.NOT_MODIFIED);
     }
 
 }
